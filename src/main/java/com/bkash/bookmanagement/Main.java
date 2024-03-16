@@ -1,12 +1,15 @@
 package com.bkash.bookmanagement;
 
+import com.bkash.bookmanagement.controller.AuthorController;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @SpringBootApplication
+//@ComponentScan(basePackageClasses = AuthorController.class)
 @RestController
 @RequestMapping("api/v1/customers")
 public class Main {
