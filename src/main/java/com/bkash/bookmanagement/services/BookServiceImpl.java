@@ -6,6 +6,7 @@ import com.bkash.bookmanagement.entity.BookGenre;
 import com.bkash.bookmanagement.repository.*;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Component
@@ -31,11 +32,6 @@ public class BookServiceImpl implements BookService {
         this.bookGenreRepository = bookGenreRepository;
     }
 
-//    public BookServiceImpl(BookRepository bookRepository, AuthorRepository authorRepository, GenreRepository genreRepository) {
-//        this.bookRepository = bookRepository;
-//        this.authorRepository = authorRepository;
-//        this.genreRepository = genreRepository;
-//    }
 
     @Override
     public List<Book> getBooks() {
@@ -48,10 +44,10 @@ public class BookServiceImpl implements BookService {
         if (! bookGenreExistError.equals("")) {
             return bookGenreExistError;
         }
+//        TODO : check whether book created time is saved properly
 
+        book.setCreatedAt(new Timestamp(System.currentTimeMillis()) );
         bookRepository.save(book);
-
-//        TODO : save Book created time
 
         bookAuthorGenreSave(book, auhtorIdList, genreIdList);
         return "";
@@ -76,6 +72,7 @@ public class BookServiceImpl implements BookService {
     private void bookAuthorGenreSave(Book book, List<Integer> authorIdList, List<Integer> genreIdList) {
         Integer bookId = book.getId();
 
+        // TODO : check whether duplicate entry throws any error
         for (Integer authorId : authorIdList) {
             BookAuthor bookAuthor = new BookAuthor(bookId, authorId);
             bookAuthorRepository.save(bookAuthor);
