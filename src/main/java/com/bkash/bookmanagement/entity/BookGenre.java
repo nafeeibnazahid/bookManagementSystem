@@ -1,9 +1,9 @@
 package com.bkash.bookmanagement.entity;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+@Entity
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "bookId", "genreId" }) })
 public class BookGenre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

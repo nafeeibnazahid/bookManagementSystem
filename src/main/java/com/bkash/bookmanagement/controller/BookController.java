@@ -1,5 +1,6 @@
 package com.bkash.bookmanagement.controller;
 
+import com.bkash.bookmanagement.dto.AddBookRequest;
 import com.bkash.bookmanagement.entity.Book;
 import com.bkash.bookmanagement.services.BookService;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +17,14 @@ public class BookController {
     }
 
     @PostMapping
-    public void addBook(@RequestBody Book book) {
-        bookService.addBook(book);
+    @ResponseBody
+    public String addBook(@RequestBody AddBookRequest addBookRequest) {
+        String err = bookService.addBook(
+                addBookRequest.getBook(),
+                addBookRequest.getAuthorIdList(),
+                addBookRequest.getGenreIdList()
+        );
+        return err;
     }
 
     @GetMapping
