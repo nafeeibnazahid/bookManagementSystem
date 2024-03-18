@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Set;
 
 @Entity
@@ -34,11 +35,10 @@ public class Book {
 //    @JsonBackReference
 //    private Set<Author> authorSet;
 
-    public Book(Integer id, String name, Timestamp createdAt, Set<Author> authorSet) {
+    public Book(Integer id, String name, Timestamp createdAt) {
         this.id = id;
         this.name = name;
         this.createdAt = createdAt;
-//        this.authorSet = authorSet;
     }
 
     public Book() {
@@ -69,11 +69,5 @@ public class Book {
         this.createdAt = createdAt;
     }
 
-//    public Set<Author> getAuthorSet() {
-//        return authorSet;
-//    }
-//
-//    public void setAuthorSet(Set<Author> authorSet) {
-//        this.authorSet = authorSet;
-//    }
+
 }

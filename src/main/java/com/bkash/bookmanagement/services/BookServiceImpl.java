@@ -1,13 +1,22 @@
 package com.bkash.bookmanagement.services;
 
+import com.bkash.bookmanagement.dto.GetBooksRequest;
 import com.bkash.bookmanagement.entity.Book;
 import com.bkash.bookmanagement.entity.BookAuthor;
 import com.bkash.bookmanagement.entity.BookGenre;
 import com.bkash.bookmanagement.repository.*;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.jaxb.SpringDataJaxb;
 import org.springframework.stereotype.Component;
 
+import java.awt.print.Pageable;
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class BookServiceImpl implements BookService {
@@ -52,6 +61,57 @@ public class BookServiceImpl implements BookService {
         bookAuthorGenreSave(book, auhtorIdList, genreIdList);
         return "";
     }
+
+    @Override
+    public List<Book> findByNameLike(
+            String likePattern,
+            Integer offset,
+            Integer limit
+    ) {
+        likePattern = likePattern + "%";
+        return bookRepository.findBookByNameLikeOrderById(likePattern);
+    }
+
+    private List<Book> getIntersenction(List<Book> bookList, Set<Integer> bookIdSet)  {
+        List<Book> ret = new LinkedList<Book>();
+        ret = bookList.stream()
+                .filter(b -> bookIdSet.contains(b.getId()))
+                .toList();
+        return ret;
+    }
+
+    @Override
+    public List<Book> getBookByGetBookReq(GetBooksRequest getBooksRequest) {
+        List<Book> bookList = bookRepository.findBookByNameLikeOrderById(getBooksRequest.getPrefixName());
+
+        List<BookAuthor> bookAuthorList = bookAuthorRepository.findBookAuthorByAuthorId(getBooksRequest.getAuthorId());
+        Set<Integer> bookIdSetFromAuthor = new HashSet<Integer>();
+        for (BookAuthor bookAuthor : bookAuthorList) {
+            bookIdSetFromAuthor.add(bookAuthor.getBookId());
+        }
+        bookList = getIntersenction(bookList, bookIdSetFromAuthor);
+
+        List<BookGenre> bookGenreList = bookGenreRepository.findBookGenreByGenreId(getBooksRequest.getGenreId());
+        Set<Integer> bookIdSetFromGenre = new HashSet<Integer>();
+        for (BookGenre bookGenre : bookGenreList) {
+            bookIdSetFromGenre.add(bookGenre.getBookId());
+        }
+        bookList = getIntersenction(bookList, bookIdSetFromGenre);
+
+        bookList = bookList.subList(getBooksRequest.getOffset(), getBooksRequest.getLimit());
+        return bookList;
+    }
+
+//    @Override
+//    public List<Book> findByNameLike(
+//            String likePattern
+////            Integer offset,
+////            Integer limit
+//    ) {
+//        int page = offset / limit;
+//        Sort sort = new Sort(Sort.Direction.DESC, "id");
+//        return bookRepository.findByNameLike(likePattern + "%", new PageRequest(offset, limit, null));
+//    }
 
     private String authorGenreExistError(List<Integer> authorIdList, List<Integer> genreIdList) {
         for (Integer authorId : authorIdList) {

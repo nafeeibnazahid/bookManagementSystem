@@ -28,6 +28,7 @@ public class BookController {
     }
 
     @GetMapping
+    @ResponseBody
     public List<Book> getBooks() {
         return bookService.getBooks();
     }
