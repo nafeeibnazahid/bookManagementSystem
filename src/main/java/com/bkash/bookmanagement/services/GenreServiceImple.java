@@ -6,9 +6,12 @@ import com.bkash.bookmanagement.repository.BookGenreRepository;
 import com.bkash.bookmanagement.repository.GenreRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class GenreServiceImple implements GenreService {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final GenreRepository genreRepository;
@@ -33,8 +36,13 @@ public class GenreServiceImple implements GenreService {
     }
 
     @Override
-    public List<Author> getAuthors() {
-        // TODO : complete implementation
-        return null;
+    public List<Genre> getGenre(
+            Integer offset,
+            Integer limit
+    ) {
+        int pageNum = offset / limit;
+        return genreRepository.findAllByOrderByIdDesc(PageRequest.of(pageNum, limit));
     }
+
+
 }

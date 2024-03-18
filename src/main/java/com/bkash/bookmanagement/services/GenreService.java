@@ -10,5 +10,5 @@ import java.util.List;
 public interface GenreService {
     public void addGenre(Genre genre);
 
-    public List<Author> getAuthors();
+    public List<Genre> getGenre(Integer offset, Integer limit);
 }

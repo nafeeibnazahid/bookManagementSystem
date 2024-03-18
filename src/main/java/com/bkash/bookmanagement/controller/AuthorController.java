@@ -25,7 +25,8 @@ public class AuthorController {
     }
 
     @GetMapping
-    public List<Author> getAuthors() {
-        return authorService.getAuthors();
+    public List<Author> getAuthors(@RequestParam(defaultValue = "0") int offset,
+                                   @RequestParam(defaultValue = "10") int limit) {
+        return authorService.getAuthors(offset, limit);
     }
 }

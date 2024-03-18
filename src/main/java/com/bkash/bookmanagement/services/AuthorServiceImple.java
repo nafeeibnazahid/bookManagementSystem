@@ -3,6 +3,7 @@ package com.bkash.bookmanagement.services;
 import com.bkash.bookmanagement.entity.Author;
 import com.bkash.bookmanagement.repository.AuthorRepository;
 import com.bkash.bookmanagement.repository.BookAuthorRepository;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -27,7 +28,8 @@ public class AuthorServiceImple implements AuthorService {
     }
 
     @Override
-    public List<Author> getAuthors() {
-        return authorRepository.findAll();
+    public List<Author> getAuthors(Integer offset, Integer limit) {
+        int pageNum = offset / limit;
+        return authorRepository.findAllByOrderByIdDesc(PageRequest.of(pageNum, limit));
     }
 }
