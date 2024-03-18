@@ -10,10 +10,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/books_info")
-public class BookGetterController {
+public class BookInfoController {
     private final BookService bookService;
 
-    public BookGetterController(BookService bookService) {
+    public BookInfoController(BookService bookService) {
         this.bookService = bookService;
     }
 
