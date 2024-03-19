@@ -20,9 +20,9 @@ public class Main {
         this.customerRepository = customerRepository;
     }
 
-    public static void main(String[] args) {
-        SpringApplication.run(Main.class, args);
-    }
+//    public static void main(String[] args) {
+//        SpringApplication.run(Main.class, args);
+//    }
 
     @GetMapping
     public List<Customer> getCustomers() {

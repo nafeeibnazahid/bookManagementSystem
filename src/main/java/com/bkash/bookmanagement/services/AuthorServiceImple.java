@@ -1,6 +1,7 @@
 package com.bkash.bookmanagement.services;
 
 import com.bkash.bookmanagement.entity.Author;
+import com.bkash.bookmanagement.entity.BookAuthor;
 import com.bkash.bookmanagement.repository.AuthorRepository;
 import com.bkash.bookmanagement.repository.BookAuthorRepository;
 import org.springframework.data.domain.PageRequest;
@@ -45,4 +46,8 @@ public class AuthorServiceImple implements AuthorService {
     }
 
 
+    public List<Integer> getBookIdListFromAuthorId(Integer authorId) {
+        List<BookAuthor> bookAuthorList =  bookAuthorRepository.findBookAuthorByAuthorId(authorId);
+        return bookAuthorList.stream().map(ob -> ob.getBookId()).toList();
+    }
 }

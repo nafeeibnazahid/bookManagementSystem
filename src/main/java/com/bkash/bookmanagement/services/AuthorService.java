@@ -18,4 +18,7 @@ public interface AuthorService {
     public Optional<Author> getSingleAuthor(Integer id);
 
     public void deleteById(Integer id);
+
+//    public List<Integer> getBookIdListFromAuthorId(Integer authorId);
+
 }
