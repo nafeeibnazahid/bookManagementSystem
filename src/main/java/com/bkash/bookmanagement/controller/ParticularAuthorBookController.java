@@ -1,6 +1,6 @@
 package com.bkash.bookmanagement.controller;
 
-import com.bkash.bookmanagement.dto.UpdateBookIdForASpecificAuthor;
+import com.bkash.bookmanagement.dto.AddBookIdForASpecificAuthor;
 import com.bkash.bookmanagement.services.AuthorService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
@@ -18,17 +18,19 @@ public class ParticularAuthorBookController {
         this.authorService = authorService;
     }
 
-//    @GetMapping
-//    public List<Integer> getParticularAuthorBookId(@PathVariable("authorId") Integer authorId) {
-//        return authorService.getBookIdListFromAuthorId(authorId);
-//    }
+    @GetMapping
+    public List<Integer> getParticularAuthorBookId(@PathVariable("authorId") Integer authorId) {
+        return authorService.getBookIdListFromAuthorId(authorId);
+    }
 
-
-
-
-    @PutMapping
-    public void updateParticularAuthorBookId(@PathVariable("authorId") Integer authorId, @RequestBody
-                                             UpdateBookIdForASpecificAuthor updateBookIdForASpecificAuthor) {
-
+    @PostMapping
+    @ResponseBody
+    public void addBookId(@PathVariable("authorId") Integer authorId, @RequestBody
+                          AddBookIdForASpecificAuthor addBookIdForASpecificAuthor
+                          ){
+        // Check Book id exist or not
+        // Check author id exist or not
+        // Check whether book_id, author_id already in DB or not
+        // Add it in the DB
     }
 }

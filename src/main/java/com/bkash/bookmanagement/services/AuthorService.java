@@ -19,6 +19,6 @@ public interface AuthorService {
 
     public void deleteById(Integer id);
 
-//    public List<Integer> getBookIdListFromAuthorId(Integer authorId);
+    public List<Integer> getBookIdListFromAuthorId(Integer authorId);
 
 }

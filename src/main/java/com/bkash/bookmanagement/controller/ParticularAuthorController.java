@@ -11,10 +11,10 @@ import java.util.Optional;
 @Component
 @RestController
 @RequestMapping("api/v1/author/{authorId}")
-public class AuthorParticularController {
+public class ParticularAuthorController {
     private final AuthorService authorService;
 
-    public AuthorParticularController(AuthorService authorService) {
+    public ParticularAuthorController(AuthorService authorService) {
         this.authorService = authorService;
     }
 
