@@ -3,7 +3,6 @@ package com.bkash.bookmanagement.controller;
 import com.bkash.bookmanagement.dto.UpdateAuthorGenreRequest;
 import com.bkash.bookmanagement.entity.Author;
 import com.bkash.bookmanagement.services.AuthorService;
-import com.fasterxml.jackson.databind.JsonSerializer;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +33,11 @@ public class AuthorParticularController {
         }
         Author author = optAuth.get();
         author.setName(name);
-        authorService.addAuthor(author); // TODO : check whether it updating author
+        authorService.addAuthor(author);
+    }
+
+    @DeleteMapping
+    public void delete(@PathVariable("authorId") Integer id) {
+        authorService.deleteById(id);
     }
 }

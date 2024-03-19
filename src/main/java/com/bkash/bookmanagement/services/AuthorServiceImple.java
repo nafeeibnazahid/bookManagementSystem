@@ -39,5 +39,10 @@ public class AuthorServiceImple implements AuthorService {
         return authorRepository.findById(id);
     }
 
+    @Override
+    public void deleteById(Integer id) {
+        authorRepository.deleteById(id);
+    }
+
 
 }

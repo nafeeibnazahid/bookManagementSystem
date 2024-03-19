@@ -1,7 +1,6 @@
 package com.bkash.bookmanagement.services;
 
 import com.bkash.bookmanagement.entity.Author;
-import com.bkash.bookmanagement.repository.AuthorRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -17,4 +16,6 @@ public interface AuthorService {
     public List<Author> getAuthors(Integer offset, Integer limit);
 
     public Optional<Author> getSingleAuthor(Integer id);
+
+    public void deleteById(Integer id);
 }
