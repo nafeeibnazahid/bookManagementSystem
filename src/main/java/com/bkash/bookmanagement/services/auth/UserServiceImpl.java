@@ -11,11 +11,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
 import java.util.List;
 
+@Component
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -25,6 +27,11 @@ public class UserServiceImpl implements UserService {
     ModelMapper modelMapper = new ModelMapper();
 
 
+    public UserServiceImpl(
+            UserRepository userRepository
+    ) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public UserResponse saveUser(UserRequest userRequest) {
