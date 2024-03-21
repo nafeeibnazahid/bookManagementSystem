@@ -36,6 +36,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // TODO : need to make write apis accessible for the admin requests
         // TODO : need to make read apis accessible for the user requests
+
+
+//        return http.csrf().disable().build();
+
         return http.csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/api/v1/login").permitAll()

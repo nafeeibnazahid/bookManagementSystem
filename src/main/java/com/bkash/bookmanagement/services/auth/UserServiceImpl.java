@@ -4,6 +4,8 @@ import com.bkash.bookmanagement.dto.auth.UserRequest;
 import com.bkash.bookmanagement.dto.auth.UserResponse;
 import com.bkash.bookmanagement.entity.auth.UserInfo;
 import com.bkash.bookmanagement.repository.auth.UserRepository;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityManager;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +26,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
 
-    ModelMapper modelMapper = new ModelMapper();
 
+    ModelMapper modelMapper = new ModelMapper();
 
     public UserServiceImpl(
             UserRepository userRepository

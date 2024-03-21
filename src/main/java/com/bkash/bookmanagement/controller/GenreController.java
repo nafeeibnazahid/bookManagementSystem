@@ -2,10 +2,12 @@ package com.bkash.bookmanagement.controller;
 
 import com.bkash.bookmanagement.entity.Genre;
 import com.bkash.bookmanagement.services.GenreService;
+import jakarta.annotation.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RestController
@@ -23,9 +25,12 @@ public class GenreController {
     }
 
     @GetMapping
-    public List<Genre> getGenres(@RequestParam(defaultValue = "0") int offset,
-                                 @RequestParam(defaultValue = "10") int limit) {
-        return genreService.getGenre(offset, limit);
+    public List<Genre> getGenres(
+            @RequestParam Optional<Integer> id,
+            @RequestParam Optional<String> name,
+            @RequestParam(defaultValue = "0") int offset,
+            @RequestParam(defaultValue = "10") int limit) {
+        return genreService.getGenre(id, name, offset, limit);
     }
 
 }

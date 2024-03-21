@@ -1,15 +1,14 @@
 package com.bkash.bookmanagement.services;
 
-import com.bkash.bookmanagement.entity.Author;
 import com.bkash.bookmanagement.entity.Genre;
 import com.bkash.bookmanagement.repository.BookGenreRepository;
 import com.bkash.bookmanagement.repository.GenreRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class GenreServiceImple implements GenreService {
@@ -37,11 +36,20 @@ public class GenreServiceImple implements GenreService {
 
     @Override
     public List<Genre> getGenre(
+            Optional<Integer> id,
+            Optional<String> name,
             Integer offset,
             Integer limit
     ) {
         int pageNum = offset / limit;
-        return genreRepository.findAllByOrderByIdDesc(PageRequest.of(pageNum, limit));
+        return genreRepository.bitByBitQuery(
+                id,
+                name
+//                offset,
+//                limit
+        );
+//        return genreRepository.findByNameId(id, name, offset, limit);
+//        return genreRepository.findAllByOrderByIdDesc(PageRequest.of(pageNum, limit));
     }
 
 
