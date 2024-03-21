@@ -5,7 +5,10 @@ import com.bkash.bookmanagement.dto.auth.*;
 import com.bkash.bookmanagement.entity.auth.RefreshToken;
 import com.bkash.bookmanagement.services.auth.JwtService;
 import com.bkash.bookmanagement.services.auth.RefreshTokenService;
+import com.bkash.bookmanagement.services.auth.UserDetailsServiceImpl;
 import com.bkash.bookmanagement.services.auth.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,6 +34,7 @@ public class UserController {
     @Autowired
     RefreshTokenService refreshTokenService;
 
+    private static final Logger logger = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
 
     @Autowired
     private  AuthenticationManager authenticationManager;
@@ -81,8 +85,10 @@ public class UserController {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDTO.getUsername(), authRequestDTO.getPassword()));
         if(authentication.isAuthenticated()){
             RefreshToken refreshToken = refreshTokenService.createRefreshToken(authRequestDTO.getUsername());
+            String accessToken = jwtService.GenerateToken(authRequestDTO.getUsername());
+            logger.info("accessToken = " + accessToken);
             return JwtResponseDTO.builder()
-                    .accessToken(jwtService.GenerateToken(authRequestDTO.getUsername()))
+                    .accessToken(accessToken)
                     .token(refreshToken.getToken()).build();
 
         } else {

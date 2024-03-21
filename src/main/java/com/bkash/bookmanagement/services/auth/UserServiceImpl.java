@@ -74,6 +74,7 @@ public class UserServiceImpl implements UserService {
             savedUser = userRepository.save(user);
         }
 //        userRepository.refresh(savedUser);
+
         UserResponse userResponse = modelMapper.map(savedUser, UserResponse.class);
         return userResponse;
     }
