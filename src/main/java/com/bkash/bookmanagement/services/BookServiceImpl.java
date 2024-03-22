@@ -55,6 +55,7 @@ public class BookServiceImpl implements BookService {
                 endTime,
                 partialName,
                 authorId,
+                genreId,
                 offset,
                 limit
         );

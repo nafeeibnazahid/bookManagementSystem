@@ -33,8 +33,8 @@ public interface BookRepository
             " (cast(:startTime as timestamp) is NULL or :startTime <= b.created_at) and " +
             " (cast(:endTime as timestamp) is NULL or b.created_at <= :endTime ) and " +
             " (:partialName is NULL or b.name like :partialName) and " +
-//            "(:authorId is null ) " +
-            " (cast(:authorId as integer) is NULL or b.id in (select BA.book_id from book_author BA where BA.author_id = :authorId) ) " +
+            " (cast(:authorId as integer) is NULL or b.id in (select BA.book_id from book_author BA where BA.author_id = :authorId) ) and " +
+            " (cast(:genreId as integer) is NULL or b.id in (select BG.book_id from book_genre BG where BG.genre_id = :genreId) ) " +
             " order by id desc " +
             " offset :offset " +
             " limit :limit ",
@@ -46,6 +46,7 @@ public interface BookRepository
             @Param("endTime") Optional<Date> endTime,
             @Param("partialName") Optional<String> partialName,
             @Param("authorId") Optional<Integer> authorId,
+            Optional<Integer> genreId,
             @Param("offset") Integer offset,
             @Param("limit") Integer limit
     );
