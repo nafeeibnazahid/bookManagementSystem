@@ -13,7 +13,10 @@ public interface AuthorService {
 
     public void addAuthor(Author author);
 
-    public List<Author> getAuthors(Integer offset, Integer limit);
+    public List<Author> getAuthors(
+            Integer offset,
+            Integer limit
+    );
 
     public Optional<Author> getSingleAuthor(Integer id);
 

@@ -25,19 +25,15 @@ import java.util.List;
 @RequestMapping("/api/v1")
 public class UserController {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
     @Autowired
     UserService userService;
-
-    @Autowired
-    private JwtService jwtService;
-
     @Autowired
     RefreshTokenService refreshTokenService;
-
-    private static final Logger logger = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
-
     @Autowired
-    private  AuthenticationManager authenticationManager;
+    private JwtService jwtService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @PostMapping(value = "/save")
     public ResponseEntity saveUser(@RequestBody UserRequest userRequest) {
@@ -54,7 +50,7 @@ public class UserController {
         try {
             List<UserResponse> userResponses = userService.getAllUser();
             return ResponseEntity.ok(userResponses);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -65,7 +61,7 @@ public class UserController {
         try {
             UserResponse userResponse = userService.getUser();
             return ResponseEntity.ok().body(userResponse);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -75,15 +71,15 @@ public class UserController {
     public String test() {
         try {
             return "Welcome";
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     @PostMapping("/login")
-    public JwtResponseDTO AuthenticateAndGetToken(@RequestBody AuthRequestDTO authRequestDTO){
+    public JwtResponseDTO AuthenticateAndGetToken(@RequestBody AuthRequestDTO authRequestDTO) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDTO.getUsername(), authRequestDTO.getPassword()));
-        if(authentication.isAuthenticated()){
+        if (authentication.isAuthenticated()) {
             RefreshToken refreshToken = refreshTokenService.createRefreshToken(authRequestDTO.getUsername());
             String accessToken = jwtService.GenerateToken(authRequestDTO.getUsername());
             logger.info("accessToken = " + accessToken);
@@ -99,7 +95,7 @@ public class UserController {
 
 
     @PostMapping("/refreshToken")
-    public JwtResponseDTO refreshToken(@RequestBody RefreshTokenRequestDTO refreshTokenRequestDTO){
+    public JwtResponseDTO refreshToken(@RequestBody RefreshTokenRequestDTO refreshTokenRequestDTO) {
         return refreshTokenService.findByToken(refreshTokenRequestDTO.getToken())
                 .map(refreshTokenService::verifyExpiration)
                 .map(RefreshToken::getUserInfo)
@@ -108,7 +104,7 @@ public class UserController {
                     return JwtResponseDTO.builder()
                             .accessToken(accessToken)
                             .token(refreshTokenRequestDTO.getToken()).build();
-                }).orElseThrow(() ->new RuntimeException("Refresh Token is not in DB..!!"));
+                }).orElseThrow(() -> new RuntimeException("Refresh Token is not in DB..!!"));
     }
 
 }

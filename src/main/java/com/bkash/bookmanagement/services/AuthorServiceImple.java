@@ -30,7 +30,10 @@ public class AuthorServiceImple implements AuthorService {
     }
 
     @Override
-    public List<Author> getAuthors(Integer offset, Integer limit) {
+    public List<Author> getAuthors(
+            Integer offset,
+            Integer limit
+    ) {
         int pageNum = offset / limit;
         return authorRepository.findAllByOrderByIdDesc(PageRequest.of(pageNum, limit));
     }
@@ -47,7 +50,7 @@ public class AuthorServiceImple implements AuthorService {
 
 
     public List<Integer> getBookIdListFromAuthorId(Integer authorId) {
-        List<BookAuthor> bookAuthorList =  bookAuthorRepository.findBookAuthorByAuthorId(authorId);
+        List<BookAuthor> bookAuthorList = bookAuthorRepository.findBookAuthorByAuthorId(authorId);
         return bookAuthorList.stream().map(ob -> ob.getBookId()).toList();
     }
 }

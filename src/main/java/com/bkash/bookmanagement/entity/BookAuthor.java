@@ -4,7 +4,7 @@ package com.bkash.bookmanagement.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "bookId", "authorId" }) })
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"bookId", "authorId"})})
 public class BookAuthor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +16,10 @@ public class BookAuthor {
     public BookAuthor() {
     }
 
-    public BookAuthor(Integer bookId, Integer authorId) {
+    public BookAuthor(
+            Integer bookId,
+            Integer authorId
+    ) {
         this.bookId = bookId;
         this.authorId = authorId;
     }

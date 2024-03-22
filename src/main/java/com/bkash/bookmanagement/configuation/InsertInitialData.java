@@ -2,7 +2,6 @@ package com.bkash.bookmanagement.configuation;
 
 import com.bkash.bookmanagement.dto.auth.UserRequest;
 import com.bkash.bookmanagement.entity.Author;
-import com.bkash.bookmanagement.entity.Book;
 import com.bkash.bookmanagement.entity.Genre;
 import com.bkash.bookmanagement.services.AuthorService;
 import com.bkash.bookmanagement.services.GenreService;
@@ -10,8 +9,6 @@ import com.bkash.bookmanagement.services.auth.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-
-import java.sql.Timestamp;
 
 @Component
 @Slf4j

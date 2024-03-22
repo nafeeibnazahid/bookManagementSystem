@@ -2,7 +2,6 @@ package com.bkash.bookmanagement.controller;
 
 import com.bkash.bookmanagement.entity.Author;
 import com.bkash.bookmanagement.services.AuthorService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +24,10 @@ public class AuthorController {
     }
 
     @GetMapping
-    public List<Author> getAuthors(@RequestParam(defaultValue = "0") int offset,
-                                   @RequestParam(defaultValue = "10") int limit) {
+    public List<Author> getAuthors(
+            @RequestParam(defaultValue = "0") int offset,
+            @RequestParam(defaultValue = "10") int limit
+    ) {
         return authorService.getAuthors(offset, limit);
     }
 }

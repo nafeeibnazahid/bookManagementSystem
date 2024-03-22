@@ -5,18 +5,13 @@ import com.bkash.bookmanagement.entity.Book;
 import com.bkash.bookmanagement.entity.BookAuthor;
 import com.bkash.bookmanagement.entity.BookGenre;
 import com.bkash.bookmanagement.repository.*;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.jaxb.SpringDataJaxb;
 import org.springframework.stereotype.Component;
 
-import java.awt.print.Pageable;
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 public class BookServiceImpl implements BookService {
@@ -48,14 +43,18 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public String addBook(Book book, List<Integer> auhtorIdList, List<Integer> genreIdList) {
+    public String addBook(
+            Book book,
+            List<Integer> auhtorIdList,
+            List<Integer> genreIdList
+    ) {
         String bookGenreExistError = authorGenreExistError(auhtorIdList, genreIdList);
-        if (! bookGenreExistError.equals("")) {
+        if (!bookGenreExistError.equals("")) {
             return bookGenreExistError;
         }
 //        TODO : check whether book created time is saved properly
 
-        book.setCreatedAt(new Timestamp(System.currentTimeMillis()) );
+        book.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         bookRepository.save(book);
 
         bookAuthorGenreSave(book, auhtorIdList, genreIdList);
@@ -72,7 +71,10 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findBookByNameLikeOrderById(likePattern);
     }
 
-    private List<Book> getIntersenction(List<Book> bookList, Set<Integer> bookIdSet)  {
+    private List<Book> getIntersenction(
+            List<Book> bookList,
+            Set<Integer> bookIdSet
+    ) {
         List<Book> ret = new LinkedList<Book>();
         ret = bookList.stream()
                 .filter(b -> bookIdSet.contains(b.getId()))
@@ -98,7 +100,10 @@ public class BookServiceImpl implements BookService {
         }
         bookList = getIntersenction(bookList, bookIdSetFromGenre);
 
-        bookList = bookList.subList(getBooksRequest.getOffset(), getBooksRequest.getLimit());
+        bookList = bookList.subList(
+                getBooksRequest.getOffset(),
+                getBooksRequest.getLimit()
+        );
         return bookList;
     }
 
@@ -113,15 +118,18 @@ public class BookServiceImpl implements BookService {
 //        return bookRepository.findByNameLike(likePattern + "%", new PageRequest(offset, limit, null));
 //    }
 
-    private String authorGenreExistError(List<Integer> authorIdList, List<Integer> genreIdList) {
+    private String authorGenreExistError(
+            List<Integer> authorIdList,
+            List<Integer> genreIdList
+    ) {
         for (Integer authorId : authorIdList) {
-            if ( ! authorRepository.existsById(authorId) ) {
+            if (!authorRepository.existsById(authorId)) {
                 return "authorId = " + String.valueOf(authorId) + " not found ";
             }
         }
 
         for (Integer genreId : genreIdList) {
-            if (! genreRepository.existsById(genreId)) {
+            if (!genreRepository.existsById(genreId)) {
                 return "genreId " + String.valueOf(genreId) + "not found";
             }
         }
@@ -129,7 +137,11 @@ public class BookServiceImpl implements BookService {
         return "";
     }
 
-    private void bookAuthorGenreSave(Book book, List<Integer> authorIdList, List<Integer> genreIdList) {
+    private void bookAuthorGenreSave(
+            Book book,
+            List<Integer> authorIdList,
+            List<Integer> genreIdList
+    ) {
         Integer bookId = book.getId();
 
         // TODO : check whether duplicate entry throws any error

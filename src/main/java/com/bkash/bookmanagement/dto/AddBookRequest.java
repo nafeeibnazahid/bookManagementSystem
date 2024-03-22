@@ -1,16 +1,13 @@
 package com.bkash.bookmanagement.dto;
 
-import com.bkash.bookmanagement.entity.Author;
 import com.bkash.bookmanagement.entity.Book;
-import com.bkash.bookmanagement.entity.Genre;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AddBookRequest {
-    private Book book;
     public List<Integer> authorIdList;
     public List<Integer> genreIdList;
+    private Book book;
 
     public Book getBook() {
         return book;

@@ -2,7 +2,6 @@ package com.bkash.bookmanagement.controller;
 
 import com.bkash.bookmanagement.entity.Genre;
 import com.bkash.bookmanagement.services.GenreService;
-import jakarta.annotation.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +28,8 @@ public class GenreController {
             @RequestParam Optional<Integer> id,
             @RequestParam Optional<String> name,
             @RequestParam(defaultValue = "0") int offset,
-            @RequestParam(defaultValue = "10") int limit) {
+            @RequestParam(defaultValue = "10") int limit
+    ) {
         return genreService.getGenre(id, name, offset, limit);
     }
 

@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface BookGenreRepository
-    extends JpaRepository<BookGenre, Integer> {
+        extends JpaRepository<BookGenre, Integer> {
 
     List<BookGenre> findBookGenreByGenreId(Integer genreId);
 

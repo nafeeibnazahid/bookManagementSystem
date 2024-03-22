@@ -1,7 +1,5 @@
 package com.bkash.bookmanagement.dto;
 
-import java.util.List;
-
 public class GetBooksRequest {
     private Integer id;
     private Integer offset;

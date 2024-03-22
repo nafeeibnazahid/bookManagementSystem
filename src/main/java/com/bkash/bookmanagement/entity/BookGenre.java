@@ -3,7 +3,7 @@ package com.bkash.bookmanagement.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "bookId", "genreId" }) })
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"bookId", "genreId"})})
 public class BookGenre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,7 +12,10 @@ public class BookGenre {
     private Integer genreId;
 
 
-    public BookGenre(Integer bookId, Integer genreId) {
+    public BookGenre(
+            Integer bookId,
+            Integer genreId
+    ) {
         this.bookId = bookId;
         this.genreId = genreId;
     }

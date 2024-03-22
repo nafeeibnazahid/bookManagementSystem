@@ -24,10 +24,12 @@ public class ParticularAuthorController {
     }
 
     @PutMapping
-    public void update(@PathVariable("authorId") Integer id, @RequestBody UpdateAuthorGenreRequest updateAuthorGenreRequest
-                       ) {
+    public void update(
+            @PathVariable("authorId") Integer id,
+            @RequestBody UpdateAuthorGenreRequest updateAuthorGenreRequest
+    ) {
         String name = updateAuthorGenreRequest.getName();
-        Optional<Author> optAuth =  authorService.getSingleAuthor(id);
+        Optional<Author> optAuth = authorService.getSingleAuthor(id);
         if (optAuth.isEmpty()) {
             return;
         }

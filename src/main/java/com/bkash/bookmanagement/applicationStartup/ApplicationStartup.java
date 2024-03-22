@@ -1,9 +1,5 @@
 package com.bkash.bookmanagement.applicationStartup;
 
-import com.bkash.bookmanagement.controller.UserController;
-import com.bkash.bookmanagement.repository.auth.UserRepository;
-import com.bkash.bookmanagement.services.auth.UserService;
-import com.bkash.bookmanagement.services.auth.UserServiceImpl;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;

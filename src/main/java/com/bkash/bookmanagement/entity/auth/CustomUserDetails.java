@@ -10,16 +10,16 @@ import java.util.List;
 
 public class CustomUserDetails extends UserInfo implements UserDetails {
 
+    Collection<? extends GrantedAuthority> authorities;
     private String username;
     private String password;
-    Collection<? extends GrantedAuthority> authorities;
 
     public CustomUserDetails(UserInfo byUsername) {
         this.username = byUsername.getUsername();
-        this.password= byUsername.getPassword();
+        this.password = byUsername.getPassword();
         List<GrantedAuthority> auths = new ArrayList<>();
 
-        for(UserRole role : byUsername.getRoles()){
+        for (UserRole role : byUsername.getRoles()) {
 
             auths.add(new SimpleGrantedAuthority(role.getName().toUpperCase()));
         }

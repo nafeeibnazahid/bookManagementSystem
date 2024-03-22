@@ -4,8 +4,6 @@ import com.bkash.bookmanagement.dto.auth.UserRequest;
 import com.bkash.bookmanagement.dto.auth.UserResponse;
 import com.bkash.bookmanagement.entity.auth.UserInfo;
 import com.bkash.bookmanagement.repository.auth.UserRepository;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityManager;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +35,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse saveUser(UserRequest userRequest) {
-        if(userRequest.getUsername() == null){
+        if (userRequest.getUsername() == null) {
             throw new RuntimeException("Parameter username is not found in request..!!");
-        } else if(userRequest.getPassword() == null){
+        } else if (userRequest.getPassword() == null) {
             throw new RuntimeException("Parameter password is not found in request..!!");
         }
 
@@ -58,9 +56,9 @@ public class UserServiceImpl implements UserService {
 
         UserInfo user = modelMapper.map(userRequest, UserInfo.class);
         user.setPassword(encodedPassword);
-        if(userRequest.getId() != null){
+        if (userRequest.getId() != null) {
             UserInfo oldUser = userRepository.findFirstById(userRequest.getId());
-            if(oldUser != null){
+            if (oldUser != null) {
                 oldUser.setId(user.getId());
                 oldUser.setPassword(user.getPassword());
                 oldUser.setUsername(user.getUsername());
@@ -94,7 +92,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserResponse> getAllUser() {
         List<UserInfo> users = (List<UserInfo>) userRepository.findAll();
-        Type setOfDTOsType = new TypeToken<List<UserResponse>>(){}.getType();
+        Type setOfDTOsType = new TypeToken<List<UserResponse>>() {
+        }.getType();
         List<UserResponse> userResponses = modelMapper.map(users, setOfDTOsType);
         return userResponses;
     }

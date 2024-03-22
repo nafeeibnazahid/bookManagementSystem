@@ -1,15 +1,12 @@
 package com.bkash.bookmanagement.repository;
 
 import com.bkash.bookmanagement.entity.Book;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
 
 public interface BookRepository
-    extends JpaRepository<Book, Integer> {
+        extends JpaRepository<Book, Integer> {
 
     // TODO : need to check LIKE name query working properly or not
 //    @Query(//            " (:prefixName is NULL or name is LIKE :prefixName) and " +
@@ -23,7 +20,7 @@ public interface BookRepository
 //    @Query("select b from book where b.name LIKE :prefixName || '%'")
 //    List<Book> getSearchedBook(String prefixName);
 
-//    TODO : need to handle likePattern + "%"
+    //    TODO : need to handle likePattern + "%"
     List<Book> findBookByNameLikeOrderById(String likePattern);
 }
 
