@@ -11,8 +11,8 @@ public interface BookService {
 
     public List<Book> getBooks(
             Optional<Integer> id,
-            Optional<Date> startDate,
-            Optional<Date> endDate,
+            Optional<Date> startTime,
+            Optional<Date> endTime,
             Optional<String> partialName,
             Integer offset,
             Integer limit

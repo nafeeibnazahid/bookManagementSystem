@@ -30,10 +30,9 @@ public interface BookRepository
     @Query(
             value = "select * from book b where " +
             "(:id is NULL or b.id = :id) and " +
-            "(cast(:startTime as timestamp) is NULL or :startTime <= b.created_at)  and" +
-//            "(:endTime is NULL or b.created_at <= :endTime) and " +
+            "(cast(:startTime as timestamp) is NULL or :startTime <= b.created_at) and " +
+            "(cast(:endTime as timestamp) is NULL or b.created_at <= :endTime ) and " +
             "(:partialName is NULL or b.name like :partialName) " +
-
             "order by id desc " +
             "offset :offset " +
             "limit :limit ",
@@ -42,7 +41,7 @@ public interface BookRepository
     List<Book> getBooks(
             @Param("id") Optional<Integer> id,
             @Param("startTime") Optional<Date> startTime,
-//            @Param("endTime") Optional<Date> endTime,
+            @Param("endTime") Optional<Date> endTime,
             @Param("partialName") Optional<String> partialName,
             @Param("offset") Integer offset,
             @Param("limit") Integer limit

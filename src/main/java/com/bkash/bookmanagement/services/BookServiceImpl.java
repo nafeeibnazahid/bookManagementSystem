@@ -38,7 +38,7 @@ public class BookServiceImpl implements BookService {
     public List<Book> getBooks(
             Optional<Integer> id,
             Optional<Date> startTime,
-            Optional<Date> endDate,
+            Optional<Date> endTime,
             Optional<String> partialName,
             Integer offset,
             Integer limit
@@ -50,9 +50,10 @@ public class BookServiceImpl implements BookService {
         return bookRepository.getBooks(
                 id,
                 startTime,
-//                endDate,
+                endTime,
                 partialName,
-                offset, limit
+                offset,
+                limit
         );
     }
 
