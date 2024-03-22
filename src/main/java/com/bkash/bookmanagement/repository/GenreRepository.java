@@ -28,12 +28,14 @@ public interface GenreRepository
     @Query(value = "select * from Genre g where " +
             " (:id is NULL or g.id = :id) and " +
             "(:name is NULL or g.name = :name) " +
-            "order by id desc", nativeQuery = true)
+            "order by id desc " +
+            "offset :offset " +
+            "limit :limit", nativeQuery = true)
     List<Genre> bitByBitQuery(
             @Param("id") Optional<Integer> id,
-            @Param("name") Optional<String> name
-//            @Param("offset") Integer offset,
-//            @Param("limit") Integer limit
+            @Param("name") Optional<String> name,
+            @Param("offset") Integer offset,
+            @Param("limit") Integer limit
     );
 
 

@@ -26,7 +26,7 @@ public class Author {
 
     }
 
-    public Author(Integer id, String name, Set<Book> booksWritten) {
+    public Author(Integer id, String name) {
         this.id = id;
         this.name = name;
 //        this.booksWritten = booksWritten;
@@ -34,6 +34,8 @@ public class Author {
 
     @Column(unique = true)
     private String name;
+
+
 
 //    @ManyToMany
 //    @JoinTable(
