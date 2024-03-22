@@ -6,8 +6,6 @@ import com.bkash.bookmanagement.services.BookService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +37,8 @@ public class BookController {
             @RequestParam Optional<String> partialName,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Optional<Date> startTime,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Optional<Date> endTime,
+            @RequestParam Optional<Integer> authorId,
+            @RequestParam Optional<Integer> genreId,
             @RequestParam(defaultValue = "0") int offset,
             @RequestParam(defaultValue = "10") int limit
     ) {
@@ -47,6 +47,8 @@ public class BookController {
                 startTime,
                 endTime,
                 partialName,
+                authorId,
+                genreId,
                 offset,
                 limit
         );

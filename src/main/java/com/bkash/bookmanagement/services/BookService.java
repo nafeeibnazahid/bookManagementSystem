@@ -14,6 +14,8 @@ public interface BookService {
             Optional<Date> startTime,
             Optional<Date> endTime,
             Optional<String> partialName,
+            Optional<Integer> authorId,
+            Optional<Integer> genreId,
             Integer offset,
             Integer limit
     );

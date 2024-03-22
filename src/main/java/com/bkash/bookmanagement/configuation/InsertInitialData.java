@@ -30,7 +30,9 @@ public class InsertInitialData implements CommandLineRunner {
 
     private final BookService bookService;
 
-    private final Integer entityCnt = 100;
+
+    private final Integer entityStart = 1;
+    private final Integer entityEnd = 10;
 
 
     public InsertInitialData(
@@ -68,7 +70,7 @@ public class InsertInitialData implements CommandLineRunner {
     }
 
     private void createGenres() {
-        for (int i = 1; i < entityCnt; i++) {
+        for (int i = entityStart; i < entityEnd; i++) {
             Genre genre = new Genre();
             genre.setName("genre" + i);
             genreService.addGenre(genre);
@@ -76,7 +78,7 @@ public class InsertInitialData implements CommandLineRunner {
     }
 
     public void createAuthors() {
-        for (int i = 1; i < entityCnt; i++) {
+        for (int i = entityStart; i < entityEnd; i++) {
             Author author = new Author();
             author.setName("author" + i);
             authorService.addAuthor(author);
@@ -85,11 +87,11 @@ public class InsertInitialData implements CommandLineRunner {
 
     private ArrayList<Integer> getAuthorGenreList(int i) {
         ArrayList<Integer> arList = new ArrayList<>();
-        if (i > 1) {
+        if (i > entityStart) {
             arList.add(i-1);
         }
         arList.add(i);
-        if (i < entityCnt-1) {
+        if (i < entityEnd-1) {
             arList.add(i+1);
         }
         return arList;
@@ -98,7 +100,7 @@ public class InsertInitialData implements CommandLineRunner {
     public void createBooks() {
         Calendar calendar = Calendar.getInstance();
         long oneDayMilliSeconds = 24 * 60 * 60 * 1000;
-        for (int i = 1; i < entityCnt; i++) {
+        for (int i = entityStart; i < entityEnd; i++) {
             Book book = new Book();
             book.setName("book" + i);
             book.setCreatedAt(new Timestamp(System.currentTimeMillis() - i * oneDayMilliSeconds));
