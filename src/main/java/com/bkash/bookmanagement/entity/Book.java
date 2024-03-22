@@ -21,6 +21,8 @@ public class Book {
 
     @Column(unique = true)
     private String name;
+
+    @Temporal(TemporalType.TIMESTAMP)
     private Timestamp createdAt;
 
 //    @ManyToMany

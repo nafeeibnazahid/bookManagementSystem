@@ -77,14 +77,14 @@ public class JwtService {
 
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_YEAR, 2);
-        var afterTwoDaysTime = calendar.getTime();
+        var expiryTime = calendar.getTime();
 
 
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(username)
                 .setIssuedAt(new Date(currentTimeMillis))
-                .setExpiration(afterTwoDaysTime)
+                .setExpiration(expiryTime)
                 .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
     }
 

@@ -8,10 +8,7 @@ import com.bkash.bookmanagement.repository.*;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Component
 public class BookServiceImpl implements BookService {
@@ -38,8 +35,25 @@ public class BookServiceImpl implements BookService {
 
 
     @Override
-    public List<Book> getBooks() {
-        return bookRepository.findAll();
+    public List<Book> getBooks(
+            Optional<Integer> id,
+            Optional<Date> startTime,
+            Optional<Date> endDate,
+            Optional<String> partialName,
+            Integer offset,
+            Integer limit
+    ) {
+        if (! partialName.isEmpty()) {
+            var newStr = "%" + partialName.get() + "%";
+            partialName = Optional.of(newStr);
+        }
+        return bookRepository.getBooks(
+                id,
+                startTime,
+//                endDate,
+                partialName,
+                offset, limit
+        );
     }
 
     @Override
@@ -59,6 +73,10 @@ public class BookServiceImpl implements BookService {
 
         bookAuthorGenreSave(book, auhtorIdList, genreIdList);
         return "";
+    }
+
+    public void saveOnlyBook(Book book) {
+        bookRepository.save(book);
     }
 
     @Override
@@ -137,7 +155,7 @@ public class BookServiceImpl implements BookService {
         return "";
     }
 
-    private void bookAuthorGenreSave(
+    public void bookAuthorGenreSave(
             Book book,
             List<Integer> authorIdList,
             List<Integer> genreIdList

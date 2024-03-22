@@ -2,13 +2,21 @@ package com.bkash.bookmanagement.configuation;
 
 import com.bkash.bookmanagement.dto.auth.UserRequest;
 import com.bkash.bookmanagement.entity.Author;
+import com.bkash.bookmanagement.entity.Book;
+import com.bkash.bookmanagement.entity.BookAuthor;
 import com.bkash.bookmanagement.entity.Genre;
 import com.bkash.bookmanagement.services.AuthorService;
+import com.bkash.bookmanagement.services.BookService;
 import com.bkash.bookmanagement.services.GenreService;
 import com.bkash.bookmanagement.services.auth.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 @Component
 @Slf4j
@@ -20,22 +28,33 @@ public class InsertInitialData implements CommandLineRunner {
 
     private final AuthorService authorService;
 
+    private final BookService bookService;
+
+    private final Integer entityCnt = 100;
+
+
     public InsertInitialData(
             UserService userService,
             GenreService genreService,
-            AuthorService authorService
+            AuthorService authorService,
+            BookService bookService
     ) {
         this.userService = userService;
         this.genreService = genreService;
         this.authorService = authorService;
+        this.bookService = bookService;
     }
-
 
     @Override
     public void run(String... args) throws Exception {
         saveSuperAdmin();
+        createEntities();
+    }
+
+    private void createEntities() {
         createGenres();
         createAuthors();
+        createBooks();
     }
 
 
@@ -49,7 +68,7 @@ public class InsertInitialData implements CommandLineRunner {
     }
 
     private void createGenres() {
-        for (int i = 0; i < 100; i++) {
+        for (int i = 1; i < entityCnt; i++) {
             Genre genre = new Genre();
             genre.setName("genre" + i);
             genreService.addGenre(genre);
@@ -57,19 +76,40 @@ public class InsertInitialData implements CommandLineRunner {
     }
 
     public void createAuthors() {
-        for (int i = 0; i < 100; i++) {
+        for (int i = 1; i < entityCnt; i++) {
             Author author = new Author();
             author.setName("author" + i);
             authorService.addAuthor(author);
         }
     }
 
-//    public void addBooks() {
-////        int timestamp
-//        for (int i = 0; i < 100; i++) {
-//            Book book = new Book();
-//            book.setName("book" + i);
-//            book.setCreatedAt(new Timestamp());
-//        }
-//    }
+    private ArrayList<Integer> getAuthorGenreList(int i) {
+        ArrayList<Integer> arList = new ArrayList<>();
+        if (i > 1) {
+            arList.add(i-1);
+        }
+        arList.add(i);
+        if (i < entityCnt-1) {
+            arList.add(i+1);
+        }
+        return arList;
+    }
+
+    public void createBooks() {
+        Calendar calendar = Calendar.getInstance();
+        long oneDayMilliSeconds = 24 * 60 * 60 * 1000;
+        for (int i = 1; i < entityCnt; i++) {
+            Book book = new Book();
+            book.setName("book" + i);
+            book.setCreatedAt(new Timestamp(System.currentTimeMillis() - i * oneDayMilliSeconds));
+            bookService.saveOnlyBook(book);
+
+            var auhtorGenreIdList = getAuthorGenreList(i);
+            bookService.bookAuthorGenreSave(
+                book,
+                auhtorGenreIdList,
+                auhtorGenreIdList
+            );
+        }
+    }
 }

@@ -42,7 +42,7 @@ public class GenreServiceImple implements GenreService {
             Integer limit
     ) {
         int pageNum = offset / limit;
-        return genreRepository.bitByBitQuery(
+        return genreRepository.getGenre(
                 id,
                 name,
                 offset,
