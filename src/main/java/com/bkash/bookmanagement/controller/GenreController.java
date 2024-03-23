@@ -27,10 +27,11 @@ public class GenreController {
     public List<Genre> getGenres(
             @RequestParam Optional<Integer> id,
             @RequestParam Optional<String> name,
+            @RequestParam Optional<Integer> bookId,
             @RequestParam(defaultValue = "0") int offset,
             @RequestParam(defaultValue = "10") int limit
     ) {
-        return genreService.getGenre(id, name, offset, limit);
+        return genreService.getGenre(id, name, bookId, offset, limit);
     }
 
 }

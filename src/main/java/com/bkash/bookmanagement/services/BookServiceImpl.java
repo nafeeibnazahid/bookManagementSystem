@@ -49,7 +49,7 @@ public class BookServiceImpl implements BookService {
             var newStr = "%" + partialName.get() + "%";
             partialName = Optional.of(newStr);
         }
-        return bookRepository.getBooks(
+        List<Book> books = bookRepository.getBooks(
                 id,
                 startTime,
                 endTime,
@@ -59,6 +59,12 @@ public class BookServiceImpl implements BookService {
                 offset,
                 limit
         );
+        for (Book book : books) {
+            List<BookAuthor> authorIdList = bookAuthorRepository.findBookAuthorByBookId(book.getId());
+            List<BookGenre> genreIdList = bookGenreRepository.findBookGenreByBookId(book.getId());
+            
+        }
+        return books;
     }
 
     @Override

@@ -13,6 +13,7 @@ public interface GenreService {
     public List<Genre> getGenre(
             Optional<Integer> id,
             Optional<String> name,
+            Optional<Integer> bookId,
             Integer offset,
             Integer limit
     );

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RestController
@@ -25,9 +26,18 @@ public class AuthorController {
 
     @GetMapping
     public List<Author> getAuthors(
+            @RequestParam Optional<Integer> id,
+            @RequestParam Optional<String> name,
+            @RequestParam Optional<Integer> bookId,
             @RequestParam(defaultValue = "0") int offset,
             @RequestParam(defaultValue = "10") int limit
     ) {
-        return authorService.getAuthors(offset, limit);
+        return authorService.getAuthors(
+                id,
+                name,
+                bookId,
+                offset,
+                limit
+        );
     }
 }

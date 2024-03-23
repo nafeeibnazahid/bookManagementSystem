@@ -3,6 +3,7 @@ package com.bkash.bookmanagement.entity;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.util.Set;
 
 @Entity
 public class Book {
@@ -25,6 +26,7 @@ public class Book {
     @Temporal(TemporalType.TIMESTAMP)
     private Timestamp createdAt;
 
+
 //    @ManyToMany
 //    @JoinTable(
 //            name="book_author",
@@ -32,7 +34,11 @@ public class Book {
 //            inverseJoinColumns = @JoinColumn(name = "book_id")
 //    )
 //    @JsonBackReference
-//    private Set<Author> authorSet;
+    @Transient
+    private Set<Author> authorSet;
+
+    @Transient
+    private Set<Genre> genreSet;
 
     public Book(
             Integer id,

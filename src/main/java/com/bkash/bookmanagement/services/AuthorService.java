@@ -14,6 +14,9 @@ public interface AuthorService {
     public void addAuthor(Author author);
 
     public List<Author> getAuthors(
+            Optional<Integer> id,
+            Optional<String> name,
+            Optional<Integer> bookId,
             Integer offset,
             Integer limit
     );

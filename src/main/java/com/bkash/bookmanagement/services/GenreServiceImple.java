@@ -38,13 +38,14 @@ public class GenreServiceImple implements GenreService {
     public List<Genre> getGenre(
             Optional<Integer> id,
             Optional<String> name,
+            Optional<Integer> bookId,
             Integer offset,
             Integer limit
     ) {
-        int pageNum = offset / limit;
         return genreRepository.getGenre(
                 id,
                 name,
+                bookId,
                 offset,
                 limit
         );

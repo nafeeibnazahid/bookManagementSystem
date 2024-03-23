@@ -31,11 +31,21 @@ public class AuthorServiceImple implements AuthorService {
 
     @Override
     public List<Author> getAuthors(
+            Optional<Integer> id,
+            Optional<String> name,
+            Optional<Integer> bookId,
             Integer offset,
             Integer limit
     ) {
-        int pageNum = offset / limit;
-        return authorRepository.findAllByOrderByIdDesc(PageRequest.of(pageNum, limit));
+        return authorRepository.getAuthor(
+                id,
+                name,
+                bookId,
+                offset,
+                limit
+        );
+//        int pageNum = offset / limit;
+//        return authorRepository.findAllByOrderByIdDesc(PageRequest.of(pageNum, limit));
     }
 
     @Override
