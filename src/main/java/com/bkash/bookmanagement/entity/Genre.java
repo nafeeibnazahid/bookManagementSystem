@@ -1,8 +1,13 @@
 package com.bkash.bookmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 
+import javax.validation.constraints.Size;
+import java.util.List;
+
 @Entity
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Genre {
     @Id
     @SequenceGenerator(
@@ -16,8 +21,12 @@ public class Genre {
     )
     private Integer id;
 
-    @Column(unique = true)
+    @Size(min = 1)
+    @Column(unique = true, nullable = false)
     private String name;
+
+    @Transient
+    List<Book> bookList;
 
     public Genre(
             Integer id,
@@ -28,6 +37,14 @@ public class Genre {
     }
 
     public Genre() {
+    }
+
+    public List<Book> getBookList() {
+        return bookList;
+    }
+
+    public void setBookList(List<Book> bookList) {
+        this.bookList = bookList;
     }
 
     public Integer getId() {

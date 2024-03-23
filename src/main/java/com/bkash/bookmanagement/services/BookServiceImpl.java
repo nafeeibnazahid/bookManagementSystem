@@ -1,5 +1,6 @@
 package com.bkash.bookmanagement.services;
 
+import com.bkash.bookmanagement.common.Constant;
 import com.bkash.bookmanagement.dto.GetBooksRequest;
 import com.bkash.bookmanagement.entity.Book;
 import com.bkash.bookmanagement.entity.BookAuthor;
@@ -17,6 +18,8 @@ public class BookServiceImpl implements BookService {
     private final GenreRepository genreRepository;
     private final BookAuthorRepository bookAuthorRepository;
     private final BookGenreRepository bookGenreRepository;
+
+
 
 
     public BookServiceImpl(
@@ -60,9 +63,20 @@ public class BookServiceImpl implements BookService {
                 limit
         );
         for (Book book : books) {
-            List<BookAuthor> authorIdList = bookAuthorRepository.findBookAuthorByBookId(book.getId());
-            List<BookGenre> genreIdList = bookGenreRepository.findBookGenreByBookId(book.getId());
-            
+            book.setAuthorList(authorRepository.getAuthor(
+                    null,
+                    null,
+                    Optional.of(book.getId()),
+                    Constant.OFFSET_ZERO,
+                    Constant.INFINITE_LIMIT
+            ));
+            book.setGenreList(genreRepository.getGenre(
+                    null,
+                    null,
+                    Optional.of(book.getId()),
+                    Constant.OFFSET_ZERO,
+                    Constant.INFINITE_LIMIT
+            ));
         }
         return books;
     }

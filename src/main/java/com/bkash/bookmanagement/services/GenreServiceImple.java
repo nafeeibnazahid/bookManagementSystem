@@ -1,7 +1,9 @@
 package com.bkash.bookmanagement.services;
 
+import com.bkash.bookmanagement.common.Constant;
 import com.bkash.bookmanagement.entity.Genre;
 import com.bkash.bookmanagement.repository.BookGenreRepository;
+import com.bkash.bookmanagement.repository.BookRepository;
 import com.bkash.bookmanagement.repository.GenreRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,12 +18,16 @@ public class GenreServiceImple implements GenreService {
     private final GenreRepository genreRepository;
     private final BookGenreRepository bookGenreRepository;
 
+    private final BookRepository bookRepository;
+
     public GenreServiceImple(
             GenreRepository genreRepository,
-            BookGenreRepository bookGenreRepository
+            BookGenreRepository bookGenreRepository,
+            BookRepository bookRepository
     ) {
         this.genreRepository = genreRepository;
         this.bookGenreRepository = bookGenreRepository;
+        this.bookRepository = bookRepository;
     }
 
     @Override
@@ -42,15 +48,26 @@ public class GenreServiceImple implements GenreService {
             Integer offset,
             Integer limit
     ) {
-        return genreRepository.getGenre(
+        List<Genre> genreLIst = genreRepository.getGenre(
                 id,
                 name,
                 bookId,
                 offset,
                 limit
         );
-//        return genreRepository.findByNameId(id, name, offset, limit);
-//        return genreRepository.findAllByOrderByIdDesc(PageRequest.of(pageNum, limit));
+        for (Genre genre : genreLIst) {
+            genre.setBookList(bookRepository.getBooks(
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    Optional.of(genre.getId()),
+                    Constant.OFFSET_ZERO,
+                    Constant.INFINITE_LIMIT
+            ));
+        }
+        return genreLIst;
     }
 
 

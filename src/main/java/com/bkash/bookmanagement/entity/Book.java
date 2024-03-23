@@ -1,11 +1,13 @@
 package com.bkash.bookmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
-import java.util.Set;
+import java.util.List;
 
 @Entity
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Book {
     @Id
     @SequenceGenerator(
@@ -35,10 +37,10 @@ public class Book {
 //    )
 //    @JsonBackReference
     @Transient
-    private Set<Author> authorSet;
+    private List<Author> authorList;
 
     @Transient
-    private Set<Genre> genreSet;
+    private List<Genre> genreList;
 
     public Book(
             Integer id,
@@ -52,6 +54,22 @@ public class Book {
 
     public Book() {
 
+    }
+
+    public List<Author> getAuthorList() {
+        return authorList;
+    }
+
+    public void setAuthorList(List<Author> authorList) {
+        this.authorList = authorList;
+    }
+
+    public List<Genre> getGenreList() {
+        return genreList;
+    }
+
+    public void setGenreList(List<Genre> genreList) {
+        this.genreList = genreList;
     }
 
     public Integer getId() {

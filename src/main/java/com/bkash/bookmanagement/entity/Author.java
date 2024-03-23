@@ -1,11 +1,17 @@
 package com.bkash.bookmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 
-@Entity
-public class Author {
-//    TODO : write some auto code which would inserts some Authors
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Size;
+import java.util.List;
 
+
+@Entity
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class Author {
     @Id
     @SequenceGenerator(
             name = "author_id_sequence",
@@ -18,7 +24,10 @@ public class Author {
     )
 //    @Column(name = "ID")
     private Integer id;
-    @Column(unique = true)
+
+
+    @Size(min = 1)
+    @Column(unique = true, nullable = false)
     private String name;
 
     public Author() {
@@ -42,6 +51,17 @@ public class Author {
 //            inverseJoinColumns = @JoinColumn(name = "author_id"))
 //    @JsonManagedReference
 //    private Set<Book> booksWritten;
+
+    @Transient
+    private List<Book> bookList;
+
+    public List<Book> getBookList() {
+        return bookList;
+    }
+
+    public void setBookList(List<Book> bookList) {
+        this.bookList = bookList;
+    }
 
     public Integer getId() {
         return id;

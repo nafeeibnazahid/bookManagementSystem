@@ -1,9 +1,11 @@
 package com.bkash.bookmanagement.services;
 
+import com.bkash.bookmanagement.common.Constant;
 import com.bkash.bookmanagement.entity.Author;
 import com.bkash.bookmanagement.entity.BookAuthor;
 import com.bkash.bookmanagement.repository.AuthorRepository;
 import com.bkash.bookmanagement.repository.BookAuthorRepository;
+import com.bkash.bookmanagement.repository.BookRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
@@ -15,13 +17,18 @@ public class AuthorServiceImple implements AuthorService {
     private final AuthorRepository authorRepository;
     private final BookAuthorRepository bookAuthorRepository;
 
+    private final BookRepository bookRepository;
+
     public AuthorServiceImple(
             AuthorRepository authorRepository,
-            BookAuthorRepository bookAuthorRepository
+            BookAuthorRepository bookAuthorRepository,
+            BookRepository bookRepository
     ) {
         this.authorRepository = authorRepository;
         this.bookAuthorRepository = bookAuthorRepository;
+        this.bookRepository = bookRepository;
     }
+
 
     @Override
     public void addAuthor(Author author) {
@@ -37,15 +44,31 @@ public class AuthorServiceImple implements AuthorService {
             Integer offset,
             Integer limit
     ) {
-        return authorRepository.getAuthor(
+        if (offset == null) {
+            offset = 0;
+        }
+        List<Author> authorList = authorRepository.getAuthor(
                 id,
                 name,
                 bookId,
                 offset,
                 limit
         );
-//        int pageNum = offset / limit;
-//        return authorRepository.findAllByOrderByIdDesc(PageRequest.of(pageNum, limit));
+        for (Author author : authorList) {
+            author.setBookList(
+                    bookRepository.getBooks(
+                            null,
+                            null,
+                            null,
+                            null,
+                            Optional.of(author.getId()),
+                            null,
+                            Constant.OFFSET_ZERO,
+                            Constant.INFINITE_LIMIT
+                    )
+            );
+        }
+        return authorList;
     }
 
     @Override
