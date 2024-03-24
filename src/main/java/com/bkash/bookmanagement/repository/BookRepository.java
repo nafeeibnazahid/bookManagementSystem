@@ -12,7 +12,11 @@ import java.util.Optional;
 public interface BookRepository
         extends JpaRepository<Book, Integer> {
 
-    List<Book> findBookByNameLikeOrderById(String likePattern);
+
+
+//    List<Book> findBookByNameLikeOrderById(String likePattern);
+
+    Book findByName(String name);
 
     @Query(
             value = "select * from book b where " +

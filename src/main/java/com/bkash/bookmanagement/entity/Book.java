@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -98,6 +100,10 @@ public class Book {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(this, obj);
     }
 
 

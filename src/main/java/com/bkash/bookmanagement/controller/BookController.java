@@ -107,4 +107,19 @@ public class BookController {
                 limit
         );
     }
+
+    @PutMapping
+    public Book updateBook(
+            @Valid @RequestBody Book book
+    ) {
+        if (book.getId() == null) {
+            throw new RuntimeException("book id can't be null");
+        }
+        return bookService.updateBook(book);
+    }
+
+    @DeleteMapping("/{bookId}")
+    public void deleteBook(@PathVariable("bookId") @NotNull Integer bookId) {
+        bookService.deleteBook(bookId);
+    }
 }

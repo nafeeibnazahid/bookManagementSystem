@@ -43,12 +43,7 @@ public interface BookService {
             List<Integer> genreIdList
     );
 
+    public Book updateBook(Book book);
 
-        public List<Book> findByNameLike(
-            String likePattern,
-            Integer offset,
-            Integer limit
-    );
-
-//    public List<Book> getBookByGetBookReq(GetBooksRequest getBooksRequest);
+    public void deleteBook(Integer bookId);
 }

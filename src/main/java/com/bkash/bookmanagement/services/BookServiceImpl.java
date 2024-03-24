@@ -68,22 +68,26 @@ public class BookServiceImpl implements BookService {
                 limit
         );
         for (Book book : books) {
-            book.setAuthorList(authorRepository.getAuthor(
-                    null,
-                    null,
-                    Optional.of(book.getId()),
-                    Constant.OFFSET_ZERO,
-                    Constant.INFINITE_LIMIT
-            ));
-            book.setGenreList(genreRepository.getGenre(
-                    null,
-                    null,
-                    Optional.of(book.getId()),
-                    Constant.OFFSET_ZERO,
-                    Constant.INFINITE_LIMIT
-            ));
+            setAuthorGenreList(book);
         }
         return books;
+    }
+
+    private void setAuthorGenreList(Book book) {
+        book.setAuthorList(authorRepository.getAuthor(
+                null,
+                null,
+                Optional.of(book.getId()),
+                Constant.OFFSET_ZERO,
+                Constant.INFINITE_LIMIT
+        ));
+        book.setGenreList(genreRepository.getGenre(
+                null,
+                null,
+                Optional.of(book.getId()),
+                Constant.OFFSET_ZERO,
+                Constant.INFINITE_LIMIT
+        ));
     }
 
 
@@ -210,15 +214,6 @@ public class BookServiceImpl implements BookService {
         bookRepository.save(book);
     }
 
-    @Override
-    public List<Book> findByNameLike(
-            String likePattern,
-            Integer offset,
-            Integer limit
-    ) {
-        likePattern = likePattern + "%";
-        return bookRepository.findBookByNameLikeOrderById(likePattern);
-    }
 
     private List<Book> getIntersenction(
             List<Book> bookList,
@@ -231,41 +226,6 @@ public class BookServiceImpl implements BookService {
         return ret;
     }
 
-//    @Override
-//    public List<Book> getBookByGetBookReq(GetBooksRequest getBooksRequest) {
-//        List<Book> bookList = bookRepository.findBookByNameLikeOrderById(getBooksRequest.getPrefixName());
-//
-//        List<BookAuthor> bookAuthorList = bookAuthorRepository.findBookAuthorByAuthorId(getBooksRequest.getAuthorId());
-//        Set<Integer> bookIdSetFromAuthor = new HashSet<Integer>();
-//        for (BookAuthor bookAuthor : bookAuthorList) {
-//            bookIdSetFromAuthor.add(bookAuthor.getBookId());
-//        }
-//        bookList = getIntersenction(bookList, bookIdSetFromAuthor);
-//
-//        List<BookGenre> bookGenreList = bookGenreRepository.findBookGenreByGenreId(getBooksRequest.getGenreId());
-//        Set<Integer> bookIdSetFromGenre = new HashSet<Integer>();
-//        for (BookGenre bookGenre : bookGenreList) {
-//            bookIdSetFromGenre.add(bookGenre.getBookId());
-//        }
-//        bookList = getIntersenction(bookList, bookIdSetFromGenre);
-//
-//        bookList = bookList.subList(
-//                getBooksRequest.getOffset(),
-//                getBooksRequest.getLimit()
-//        );
-//        return bookList;
-//    }
-
-//    @Override
-//    public List<Book> findByNameLike(
-//            String likePattern
-////            Integer offset,
-////            Integer limit
-//    ) {
-//        int page = offset / limit;
-//        Sort sort = new Sort(Sort.Direction.DESC, "id");
-//        return bookRepository.findByNameLike(likePattern + "%", new PageRequest(offset, limit, null));
-//    }
 
     private void validateAuthorGenreDoesNotExistError(
             List<Integer> authorIdList,
@@ -307,5 +267,41 @@ public class BookServiceImpl implements BookService {
         }
 
     }
+
+
+    private void validateForUpdateBook(
+            Book oldBook,
+            Book newBook
+    ) {
+        if (oldBook.equals(newBook)) {
+            throw new RuntimeException("same as previously saved book");
+        }
+        Book alreadyInDbWithSameName = bookRepository.findByName(newBook.getName());
+        if (alreadyInDbWithSameName != null && alreadyInDbWithSameName.getId() != newBook.getId()) {
+            throw new RuntimeException("same name in DB with id " + alreadyInDbWithSameName.getId());
+        }
+    }
+
+
+    @Override
+    public Book updateBook(Book newBook) {
+        Book oldBook = bookRepository.getReferenceById(newBook.getId());
+        validateForUpdateBook(oldBook, newBook);
+        oldBook.setName(newBook.getName());
+        oldBook = bookRepository.save(oldBook);
+        setAuthorGenreList(oldBook);
+        return oldBook;
+    }
+
+    @Override
+    public void deleteBook(Integer bookId) {
+        if (!bookRepository.existsById(bookId)) {
+            throw new RuntimeException("Book doesn't exist in DB");
+        }
+        bookRepository.deleteById(bookId);
+        bookAuthorRepository.deleteByBookId(bookId);
+        bookGenreRepository.deleteByBookId(bookId);
+    }
+
 
 }
