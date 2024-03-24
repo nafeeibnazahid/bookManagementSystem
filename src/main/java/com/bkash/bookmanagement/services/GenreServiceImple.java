@@ -7,6 +7,7 @@ import com.bkash.bookmanagement.repository.BookRepository;
 import com.bkash.bookmanagement.repository.GenreRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -31,8 +32,13 @@ public class GenreServiceImple implements GenreService {
     }
 
     @Override
-    public void addGenre(Genre genre) {
-        genreRepository.save(genre);
+    public Genre addGenre(Genre genre) {
+        Optional<Genre> prevGenre = genreRepository.findOne(Example.of(genre));
+        if (prevGenre.isPresent()) {
+            Integer prevId = prevGenre.get().getId();
+            throw new RuntimeException("name already exist for genre with id " + prevId);
+        }
+        return genreRepository.save(genre);
     }
 
     @Override

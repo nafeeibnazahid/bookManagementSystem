@@ -20,10 +20,10 @@ public class GenreController {
     }
 
     @PostMapping
-    public void addGenre(
+    public Genre addGenre(
             @Valid @RequestBody Genre genre
     ) {
-        genreService.addGenre(
+        return genreService.addGenre(
                 genre
         );
     }

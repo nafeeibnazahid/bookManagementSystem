@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Component
 public interface GenreService {
-    public void addGenre(Genre genre);
+    public Genre addGenre(Genre genre);
 
     public List<Genre> getGenre(
             Optional<Integer> id,
