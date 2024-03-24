@@ -3,6 +3,7 @@ package com.bkash.bookmanagement.services;
 import com.bkash.bookmanagement.common.Constant;
 import com.bkash.bookmanagement.entity.Author;
 import com.bkash.bookmanagement.entity.BookAuthor;
+import com.bkash.bookmanagement.entity.Genre;
 import com.bkash.bookmanagement.repository.AuthorRepository;
 import com.bkash.bookmanagement.repository.BookAuthorRepository;
 import com.bkash.bookmanagement.repository.BookRepository;
@@ -31,7 +32,6 @@ public class AuthorServiceImple implements AuthorService {
 
     @Override
     public Author addAuthor(Author author) {
-//        TODO : check whether duplicate author_name there
         return authorRepository.save(author);
     }
 
@@ -85,4 +85,45 @@ public class AuthorServiceImple implements AuthorService {
         List<BookAuthor> bookAuthorList = bookAuthorRepository.findBookAuthorByAuthorId(authorId);
         return bookAuthorList.stream().map(ob -> ob.getBookId()).toList();
     }
+
+    private void validateForUpdateAuthor(
+            Author oldAuthor,
+            Author newAuthor
+    ) {
+        if (oldAuthor.equals(newAuthor)) {
+            throw new RuntimeException("same as previously saved author");
+        }
+        Author alreadyInDbWithSameName = authorRepository.findByName(newAuthor.getName());
+        if (alreadyInDbWithSameName != null && alreadyInDbWithSameName.getId() != newAuthor.getId()) {
+            throw new RuntimeException("same name in DB with id " + alreadyInDbWithSameName.getId());
+        }
+    }
+
+
+    @Override
+    public Author updateAuthor(Author newAuthor) {
+        Author oldAuthor = authorRepository.getReferenceById(newAuthor.getId());
+        validateForUpdateAuthor(oldAuthor, newAuthor);
+        oldAuthor.setName(newAuthor.getName());
+        return authorRepository.save(oldAuthor);
+    }
+
+
+    @Override
+    public void deleteAuthor(Integer authorId){
+        List<BookAuthor> bookAuthorList = bookAuthorRepository.findBookAuthorByAuthorId(authorId) ;
+        if (bookAuthorList.size() > 0) {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append( "Author id " + authorId + " exists for books with id ");
+            for (var bookAuthor: bookAuthorList) {
+                stringBuilder.append( bookAuthor.getBookId() + ", " );
+            }
+            throw new RuntimeException(stringBuilder.toString());
+        }
+        if (authorRepository.findById(authorId).isEmpty()) {
+            throw new RuntimeException("author is absent for id " + authorId);
+        }
+        authorRepository.deleteById(authorId);
+    }
+
 }

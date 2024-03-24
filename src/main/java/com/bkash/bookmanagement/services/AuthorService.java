@@ -29,4 +29,7 @@ public interface AuthorService {
 
     public List<Integer> getBookIdListFromAuthorId(Integer authorId);
 
+    public Author updateAuthor(Author author);
+
+    public void deleteAuthor(Integer authorId);
 }

@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Size;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
 import java.util.List;
 
 
@@ -71,9 +73,6 @@ public class Author {
         this.id = id;
     }
 
-//    public Set<Book> getBooksWritten() {
-//        return booksWritten;
-//    }
 
     public String getName() {
         return name;
@@ -83,7 +82,9 @@ public class Author {
         this.name = name;
     }
 
-//    public void setBooksWritten(Set<Book> booksWritten) {
-//        this.booksWritten = booksWritten;
-//    }
+
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(this, obj);
+    }
+
 }

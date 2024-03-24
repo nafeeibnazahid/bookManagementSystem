@@ -14,6 +14,10 @@ public interface AuthorRepository
         extends JpaRepository<Author, Integer> {
     public List<Author> findAllByOrderByIdDesc(Pageable pageable);
 
+
+    public Author findByName(String name);
+
+
     @Query(value = "select * from author a where " +
             "(:id is NULL or a.id = :id) and " +
             "(:name is NULL or a.name = :name) and " +

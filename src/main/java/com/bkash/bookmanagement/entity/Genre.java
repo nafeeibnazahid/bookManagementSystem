@@ -4,16 +4,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
-//import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 @Entity
 @JsonInclude(JsonInclude.Include.NON_NULL)
-//@Validated
 public class Genre {
     @Id
     @SequenceGenerator(
@@ -34,7 +30,7 @@ public class Genre {
     @Transient
     List<Book> bookList;
 
-    public Genre(
+    public  Genre(
             Integer id,
             String name
     ) {

@@ -24,6 +24,7 @@ public class GenreController {
     public Genre addGenre(
             @Valid @RequestBody Genre genre
     ) {
+        genre.setId(null);
         return genreService.addGenre(
                 genre
         );

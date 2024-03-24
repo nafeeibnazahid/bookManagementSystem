@@ -3,7 +3,6 @@ package com.bkash.bookmanagement.configuation;
 import com.bkash.bookmanagement.dto.auth.UserRequest;
 import com.bkash.bookmanagement.entity.Author;
 import com.bkash.bookmanagement.entity.Book;
-import com.bkash.bookmanagement.entity.BookAuthor;
 import com.bkash.bookmanagement.entity.Genre;
 import com.bkash.bookmanagement.services.AuthorService;
 import com.bkash.bookmanagement.services.BookService;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Component;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 @Component
 @Slf4j

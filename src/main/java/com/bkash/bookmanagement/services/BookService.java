@@ -1,6 +1,5 @@
 package com.bkash.bookmanagement.services;
 
-import com.bkash.bookmanagement.dto.GetBooksRequest;
 import com.bkash.bookmanagement.entity.Author;
 import com.bkash.bookmanagement.entity.Book;
 import com.bkash.bookmanagement.entity.Genre;
