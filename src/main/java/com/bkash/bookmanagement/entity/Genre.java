@@ -3,11 +3,15 @@ package com.bkash.bookmanagement.entity;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import org.springframework.validation.annotation.Validated;
+
 import java.util.List;
 
 @Entity
 @JsonInclude(JsonInclude.Include.NON_NULL)
+//@Validated
 public class Genre {
     @Id
     @SequenceGenerator(
@@ -21,8 +25,8 @@ public class Genre {
     )
     private Integer id;
 
-    @Size(min = 1)
     @Column(unique = true, nullable = false)
+    @NotBlank(message = "name can't be empty")
     private String name;
 
     @Transient

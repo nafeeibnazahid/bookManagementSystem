@@ -11,7 +11,9 @@ import java.util.Optional;
 public interface AuthorService {
 
 
-    public void addAuthor(Author author);
+    public Author addAuthor(
+            Author author
+    );
 
     public List<Author> getAuthors(
             Optional<Integer> id,

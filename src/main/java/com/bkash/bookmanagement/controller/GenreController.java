@@ -2,6 +2,7 @@ package com.bkash.bookmanagement.controller;
 
 import com.bkash.bookmanagement.entity.Genre;
 import com.bkash.bookmanagement.services.GenreService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +20,12 @@ public class GenreController {
     }
 
     @PostMapping
-    public void addGenre(@RequestBody Genre genre) {
-        genreService.addGenre(genre);
+    public void addGenre(
+            @Valid @RequestBody Genre genre
+    ) {
+        genreService.addGenre(
+                genre
+        );
     }
 
     @GetMapping

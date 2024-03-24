@@ -16,6 +16,6 @@ public class GlobalExceptionHandler {
         log.error(exception.getMessage());
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Error occurred");
+                .body(exception.getMessage());
     }
 }

@@ -6,7 +6,6 @@ import com.bkash.bookmanagement.entity.BookAuthor;
 import com.bkash.bookmanagement.repository.AuthorRepository;
 import com.bkash.bookmanagement.repository.BookAuthorRepository;
 import com.bkash.bookmanagement.repository.BookRepository;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -31,9 +30,9 @@ public class AuthorServiceImple implements AuthorService {
 
 
     @Override
-    public void addAuthor(Author author) {
+    public Author addAuthor(Author author) {
 //        TODO : check whether duplicate author_name there
-        authorRepository.save(author);
+        return authorRepository.save(author);
     }
 
     @Override

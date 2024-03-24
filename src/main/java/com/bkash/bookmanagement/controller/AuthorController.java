@@ -2,6 +2,7 @@ package com.bkash.bookmanagement.controller;
 
 import com.bkash.bookmanagement.entity.Author;
 import com.bkash.bookmanagement.services.AuthorService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +21,10 @@ public class AuthorController {
     }
 
     @PostMapping
-    public void AddAuthor(@RequestBody Author author) {
-        authorService.addAuthor(author);
+    public Author AddAuthor(
+            @Valid @RequestBody Author author
+    ) {
+        return authorService.addAuthor(author);
     }
 
     @GetMapping

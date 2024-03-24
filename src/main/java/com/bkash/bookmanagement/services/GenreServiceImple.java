@@ -32,12 +32,7 @@ public class GenreServiceImple implements GenreService {
 
     @Override
     public void addGenre(Genre genre) {
-        try {
-            genreRepository.save(genre);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
-
+        genreRepository.save(genre);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.bkash.bookmanagement.controller;
 import com.bkash.bookmanagement.dto.AddBookRequest;
 import com.bkash.bookmanagement.entity.Book;
 import com.bkash.bookmanagement.services.BookService;
+import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,13 +16,15 @@ import java.util.Optional;
 public class BookController {
     private final BookService bookService;
 
-    public BookController(BookService bookService) {
+    public BookController(
+            BookService bookService
+    ) {
         this.bookService = bookService;
     }
 
     @PostMapping
     @ResponseBody
-    public String addBook(@RequestBody AddBookRequest addBookRequest) {
+    public String addBook(@Valid @RequestBody AddBookRequest addBookRequest) {
         String err = bookService.addBook(
                 addBookRequest.getBook(),
                 addBookRequest.getAuthorIdList(),

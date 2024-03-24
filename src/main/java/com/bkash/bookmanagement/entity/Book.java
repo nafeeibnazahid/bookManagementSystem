@@ -3,6 +3,7 @@ package com.bkash.bookmanagement.entity;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 
+import jakarta.validation.constraints.Size;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -22,7 +23,8 @@ public class Book {
 //    @Column(name = "ID")
     private Integer id;
 
-    @Column(unique = true)
+    @Size(min = 1)
+    @Column(unique = true, nullable = false)
     private String name;
 
     @Temporal(TemporalType.TIMESTAMP)
