@@ -3,6 +3,7 @@ package com.bkash.bookmanagement.entity;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.sql.Timestamp;
 import java.util.List;
@@ -25,6 +26,7 @@ public class Book {
 
     @Size(min = 1)
     @Column(unique = true, nullable = false)
+    @NotBlank(message = "name can't be empty")
     private String name;
 
     @Temporal(TemporalType.TIMESTAMP)

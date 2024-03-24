@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
@@ -30,6 +31,7 @@ public class Author {
 
     @Size(min = 1)
     @Column(unique = true, nullable = false)
+    @NotBlank(message = "name can't be empty")
     private String name;
 
     public Author() {

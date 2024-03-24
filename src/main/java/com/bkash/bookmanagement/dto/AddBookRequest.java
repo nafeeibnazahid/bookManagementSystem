@@ -1,13 +1,17 @@
 package com.bkash.bookmanagement.dto;
 
 import com.bkash.bookmanagement.entity.Book;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
 public class AddBookRequest {
     public List<Integer> authorIdList;
     public List<Integer> genreIdList;
+
+    @Valid
     private Book book;
+
 
     public Book getBook() {
         return book;

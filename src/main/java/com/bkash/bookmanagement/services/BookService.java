@@ -29,7 +29,7 @@ public interface BookService {
 
     public void removeBookGenre(int bookId, int genreId);
 
-    public String addBook(
+    public Book addBook(
             Book book,
             List<Integer> auhtorIdList,
             List<Integer> genreIdList

@@ -12,6 +12,7 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -68,13 +69,19 @@ public class BookController {
 
     @PostMapping
     @ResponseBody
-    public String addBook(@Valid @RequestBody AddBookRequest addBookRequest) {
-        String err = bookService.addBook(
+    public Book addBook(@Valid @RequestBody AddBookRequest addBookRequest) {
+        if (addBookRequest.authorIdList == null) {
+            addBookRequest.authorIdList = new ArrayList<>();
+        }
+        if (addBookRequest.genreIdList == null) {
+            addBookRequest.genreIdList = new ArrayList<>();
+        }
+
+        return bookService.addBook(
                 addBookRequest.getBook(),
                 addBookRequest.getAuthorIdList(),
                 addBookRequest.getGenreIdList()
         );
-        return err;
     }
 
     @GetMapping

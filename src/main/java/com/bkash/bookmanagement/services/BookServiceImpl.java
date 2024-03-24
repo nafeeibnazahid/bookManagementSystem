@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class BookServiceImpl implements BookService {
@@ -51,10 +52,11 @@ public class BookServiceImpl implements BookService {
             Integer offset,
             Integer limit
     ) {
-        if (! partialName.isEmpty()) {
-            var newStr = "%" + partialName.get() + "%";
-            partialName = Optional.of(newStr);
+        String newStr = "%%";
+        if ( partialName != null ) {
+            newStr = "%" + partialName.get() + "%";
         }
+        partialName = Optional.of(newStr);
         List<Book> books = bookRepository.getBooks(
                 id,
                 startTime,
@@ -179,22 +181,29 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public String addBook(
+    public Book addBook(
             Book book,
             List<Integer> auhtorIdList,
             List<Integer> genreIdList
     ) {
-        String bookGenreExistError = authorGenreExistError(auhtorIdList, genreIdList);
-        if (!bookGenreExistError.equals("")) {
-            return bookGenreExistError;
-        }
-//        TODO : check whether book created time is saved properly
+        validateAuthorGenreDoesNotExistError(auhtorIdList, genreIdList);
 
         book.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-        bookRepository.save(book);
+        book = bookRepository.save(book);
+        var bookId = book.getId();
 
         bookAuthorGenreSave(book, auhtorIdList, genreIdList);
-        return "";
+        book = getBooks(
+                Optional.of(bookId),
+                null,
+                null,
+                null,
+                null,
+                null,
+                Constant.OFFSET_ZERO,
+                Constant.INFINITE_LIMIT
+        ).get(0);
+        return book;
     }
 
     public void saveOnlyBook(Book book) {
@@ -258,23 +267,24 @@ public class BookServiceImpl implements BookService {
 //        return bookRepository.findByNameLike(likePattern + "%", new PageRequest(offset, limit, null));
 //    }
 
-    private String authorGenreExistError(
+    private void validateAuthorGenreDoesNotExistError(
             List<Integer> authorIdList,
             List<Integer> genreIdList
     ) {
+        StringBuilder stringBuilder = new StringBuilder();
         for (Integer authorId : authorIdList) {
             if (!authorRepository.existsById(authorId)) {
-                return "authorId = " + String.valueOf(authorId) + " not found ";
+                stringBuilder.append("authorId = " + String.valueOf(authorId) + " not found ");
             }
         }
-
         for (Integer genreId : genreIdList) {
             if (!genreRepository.existsById(genreId)) {
-                return "genreId " + String.valueOf(genreId) + "not found";
+                stringBuilder.append("genreId " + String.valueOf(genreId) + "not found");
             }
         }
-
-        return "";
+        if (stringBuilder.length() > 0) {
+            throw new RuntimeException(stringBuilder.toString());
+        }
     }
 
     public void bookAuthorGenreSave(
@@ -284,12 +294,13 @@ public class BookServiceImpl implements BookService {
     ) {
         Integer bookId = book.getId();
 
-        // TODO : check whether duplicate entry throws any error
+        authorIdList = authorIdList.stream().distinct().collect(Collectors.toList());
         for (Integer authorId : authorIdList) {
             BookAuthor bookAuthor = new BookAuthor(bookId, authorId);
             bookAuthorRepository.save(bookAuthor);
         }
 
+        genreIdList = genreIdList.stream().distinct().collect(Collectors.toList());
         for (Integer genreId : genreIdList) {
             BookGenre bookGenre = new BookGenre(bookId, genreId);
             bookGenreRepository.save(bookGenre);
