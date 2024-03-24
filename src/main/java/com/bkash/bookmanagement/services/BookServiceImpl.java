@@ -1,11 +1,9 @@
 package com.bkash.bookmanagement.services;
 
 import com.bkash.bookmanagement.common.Constant;
-import com.bkash.bookmanagement.dto.GetBooksRequest;
-import com.bkash.bookmanagement.entity.Book;
-import com.bkash.bookmanagement.entity.BookAuthor;
-import com.bkash.bookmanagement.entity.BookGenre;
+import com.bkash.bookmanagement.entity.*;
 import com.bkash.bookmanagement.repository.*;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
@@ -19,21 +17,26 @@ public class BookServiceImpl implements BookService {
     private final BookAuthorRepository bookAuthorRepository;
     private final BookGenreRepository bookGenreRepository;
 
+    private final AuthorService authorService;
 
-
+    private final GenreService genreService;
 
     public BookServiceImpl(
             BookRepository bookRepository,
             AuthorRepository authorRepository,
             GenreRepository genreRepository,
             BookAuthorRepository bookAuthorRepository,
-            BookGenreRepository bookGenreRepository
+            BookGenreRepository bookGenreRepository,
+            AuthorService authorService,
+            GenreService genreService
     ) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
         this.genreRepository = genreRepository;
         this.bookAuthorRepository = bookAuthorRepository;
         this.bookGenreRepository = bookGenreRepository;
+        this.authorService = authorService;
+        this.genreService = genreService;
     }
 
 
@@ -81,6 +84,100 @@ public class BookServiceImpl implements BookService {
         return books;
     }
 
+
+    @Override
+    public Author addBookAuthor(
+            int bookId,
+            int authorId
+    ) {
+        if (! bookRepository.existsById(bookId)) {
+            throw new RuntimeException("book doesn't exist");
+        }
+        if (!authorRepository.existsById(authorId)) {
+            throw new RuntimeException("authro doesn't exist");
+        }
+        if (bookAuthorRepository.existsByBookIdAndAuthorId(bookId, authorId)) {
+            throw new RuntimeException("book author relationship already exist");
+        }
+        BookAuthor bookAuthor = new BookAuthor(
+                bookId,
+                authorId
+        );
+        bookAuthorRepository.save(bookAuthor);
+        List<Author> authorList = authorService.getAuthors(
+                Optional.of(authorId),
+                null,
+                null,
+                Constant.OFFSET_ZERO,
+                Constant.INFINITE_LIMIT
+        );
+        return authorList.get(0);
+    }
+
+    @Override
+    public void deleteBookAuthor(
+            int bookId,
+            int authorId
+    ) {
+        var bookAuthor = bookAuthorRepository.findOne(
+                Example.of(new BookAuthor(
+                        bookId,
+                        authorId
+                ))
+        );
+        if (bookAuthor.isEmpty()) {
+            throw new RuntimeException("Book Author relation doesn't exist");
+        }
+        bookAuthorRepository.delete(bookAuthor.get());
+    }
+
+    @Override
+    public Genre addBookGenre(
+            int bookId,
+            int genreId
+    ) {
+        if (! bookRepository.existsById(bookId)) {
+            throw new RuntimeException("book doesn't exist");
+        }
+        if (!genreRepository.existsById(genreId)) {
+            throw new RuntimeException("authro doesn't exist");
+        }
+        if (bookGenreRepository.existsByBookIdAndGenreId(bookId, genreId)) {
+            throw new RuntimeException("book author relationship already exist");
+        }
+        BookGenre bookGenre = new BookGenre(
+                bookId,
+                genreId
+        );
+        bookGenreRepository.save(bookGenre);
+
+        List<Genre> genreList = genreService.getGenre(
+                Optional.of(genreId),
+                null,
+                null,
+                Constant.OFFSET_ZERO,
+                Constant.INFINITE_LIMIT
+        );
+        return genreList.get(0);
+    }
+
+    @Override
+    public void removeBookGenre(
+            int bookId,
+            int genreId
+    ) {
+        var bookGenre = bookGenreRepository.findOne(
+                Example.of(new BookGenre(
+                        bookId,
+                        genreId
+                ))
+        );
+        if (bookGenre.isEmpty()) {
+            throw new RuntimeException("Book Genre relation doesn't exist");
+        }
+        bookGenreRepository.delete(bookGenre.get());
+    }
+
     @Override
     public String addBook(
             Book book,
@@ -125,30 +222,30 @@ public class BookServiceImpl implements BookService {
         return ret;
     }
 
-    @Override
-    public List<Book> getBookByGetBookReq(GetBooksRequest getBooksRequest) {
-        List<Book> bookList = bookRepository.findBookByNameLikeOrderById(getBooksRequest.getPrefixName());
-
-        List<BookAuthor> bookAuthorList = bookAuthorRepository.findBookAuthorByAuthorId(getBooksRequest.getAuthorId());
-        Set<Integer> bookIdSetFromAuthor = new HashSet<Integer>();
-        for (BookAuthor bookAuthor : bookAuthorList) {
-            bookIdSetFromAuthor.add(bookAuthor.getBookId());
-        }
-        bookList = getIntersenction(bookList, bookIdSetFromAuthor);
-
-        List<BookGenre> bookGenreList = bookGenreRepository.findBookGenreByGenreId(getBooksRequest.getGenreId());
-        Set<Integer> bookIdSetFromGenre = new HashSet<Integer>();
-        for (BookGenre bookGenre : bookGenreList) {
-            bookIdSetFromGenre.add(bookGenre.getBookId());
-        }
-        bookList = getIntersenction(bookList, bookIdSetFromGenre);
-
-        bookList = bookList.subList(
-                getBooksRequest.getOffset(),
-                getBooksRequest.getLimit()
-        );
-        return bookList;
-    }
+//    @Override
+//    public List<Book> getBookByGetBookReq(GetBooksRequest getBooksRequest) {
+//        List<Book> bookList = bookRepository.findBookByNameLikeOrderById(getBooksRequest.getPrefixName());
+//
+//        List<BookAuthor> bookAuthorList = bookAuthorRepository.findBookAuthorByAuthorId(getBooksRequest.getAuthorId());
+//        Set<Integer> bookIdSetFromAuthor = new HashSet<Integer>();
+//        for (BookAuthor bookAuthor : bookAuthorList) {
+//            bookIdSetFromAuthor.add(bookAuthor.getBookId());
+//        }
+//        bookList = getIntersenction(bookList, bookIdSetFromAuthor);
+//
+//        List<BookGenre> bookGenreList = bookGenreRepository.findBookGenreByGenreId(getBooksRequest.getGenreId());
+//        Set<Integer> bookIdSetFromGenre = new HashSet<Integer>();
+//        for (BookGenre bookGenre : bookGenreList) {
+//            bookIdSetFromGenre.add(bookGenre.getBookId());
+//        }
+//        bookList = getIntersenction(bookList, bookIdSetFromGenre);
+//
+//        bookList = bookList.subList(
+//                getBooksRequest.getOffset(),
+//                getBooksRequest.getLimit()
+//        );
+//        return bookList;
+//    }
 
 //    @Override
 //    public List<Book> findByNameLike(

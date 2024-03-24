@@ -1,9 +1,14 @@
 package com.bkash.bookmanagement.controller;
 
 import com.bkash.bookmanagement.dto.AddBookRequest;
+import com.bkash.bookmanagement.dto.auth.AddAuthorToABookRequest;
+import com.bkash.bookmanagement.dto.auth.AddGenreToABookRequest;
+import com.bkash.bookmanagement.entity.Author;
 import com.bkash.bookmanagement.entity.Book;
+import com.bkash.bookmanagement.entity.Genre;
 import com.bkash.bookmanagement.services.BookService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +26,45 @@ public class BookController {
     ) {
         this.bookService = bookService;
     }
+
+    @PostMapping("/{bookId}/author")
+    @ResponseBody
+    public Author addAuthor(
+            @PathVariable("bookId") @NotNull Integer bookId,
+            @Valid @RequestBody AddAuthorToABookRequest addAuthorToABookRequest
+    ) {
+        var authorId = addAuthorToABookRequest.authorId;
+        return bookService.addBookAuthor(bookId, authorId);
+    }
+
+    @DeleteMapping("/{bookId}/author/{authorId}")
+    @ResponseBody
+    public void deleteAuthor(
+            @PathVariable("bookId") @NotNull Integer bookId,
+            @PathVariable("authorId") @NotNull Integer authorId
+    ) {
+        bookService.deleteBookAuthor(bookId, authorId);
+    }
+
+    @PostMapping("/{bookId}/genre")
+    @ResponseBody
+    public Genre addGenre(
+            @PathVariable("bookId") @NotNull Integer bookId,
+            @Valid @RequestBody AddGenreToABookRequest addGenreToABookRequest
+    ) {
+        var genreId = addGenreToABookRequest.genreId;
+        return bookService.addBookGenre(bookId, genreId);
+    }
+
+    @DeleteMapping("/{bookId}/genre/{genreId}")
+    @ResponseBody
+    public void deleteGenre(
+            @PathVariable("bookId") @NotNull Integer bookId,
+            @PathVariable("genreId") Integer genreId
+    ) {
+        bookService.removeBookGenre(bookId, genreId);
+    }
+
 
     @PostMapping
     @ResponseBody

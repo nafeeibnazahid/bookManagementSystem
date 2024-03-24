@@ -1,7 +1,9 @@
 package com.bkash.bookmanagement.services;
 
 import com.bkash.bookmanagement.dto.GetBooksRequest;
+import com.bkash.bookmanagement.entity.Author;
 import com.bkash.bookmanagement.entity.Book;
+import com.bkash.bookmanagement.entity.Genre;
 
 import java.util.Date;
 import java.util.List;
@@ -20,8 +22,15 @@ public interface BookService {
             Integer limit
     );
 
+    public Author addBookAuthor(int bookId, int authorId);
 
-        public String addBook(
+    public void deleteBookAuthor(int bookId, int authorId);
+
+    public Genre addBookGenre(int bookId, int genreId);
+
+    public void removeBookGenre(int bookId, int genreId);
+
+    public String addBook(
             Book book,
             List<Integer> auhtorIdList,
             List<Integer> genreIdList
@@ -42,5 +51,5 @@ public interface BookService {
             Integer limit
     );
 
-    public List<Book> getBookByGetBookReq(GetBooksRequest getBooksRequest);
+//    public List<Book> getBookByGetBookReq(GetBooksRequest getBooksRequest);
 }

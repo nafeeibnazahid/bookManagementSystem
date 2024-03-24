@@ -12,4 +12,6 @@ public interface BookAuthorRepository
 
     List<BookAuthor> findBookAuthorByBookId(Integer bookId);
 
+    public boolean existsByBookIdAndAuthorId(int bookId, int authorId);
+
 }

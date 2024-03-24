@@ -11,4 +11,6 @@ public interface BookGenreRepository
     List<BookGenre> findBookGenreByGenreId(Integer genreId);
 
     List<BookGenre> findBookGenreByBookId(Integer bookId);
+
+    public boolean existsByBookIdAndGenreId(int bookId, int genreId);
 }
