@@ -31,13 +31,17 @@ public class GenreServiceImple implements GenreService {
         this.bookRepository = bookRepository;
     }
 
-    @Override
-    public Genre addGenre(Genre genre) {
+    private void valiedateForAddGenre(Genre genre) {
         Optional<Genre> prevGenre = genreRepository.findOne(Example.of(genre));
         if (prevGenre.isPresent()) {
             Integer prevId = prevGenre.get().getId();
             throw new RuntimeException("name already exist for genre with id " + prevId);
         }
+    }
+
+    @Override
+    public Genre addGenre(Genre genre) {
+        valiedateForAddGenre(genre);
         return genreRepository.save(genre);
     }
 
@@ -69,6 +73,26 @@ public class GenreServiceImple implements GenreService {
             ));
         }
         return genreLIst;
+    }
+
+    private void validateForUpdateGenre(
+            Genre oldGenre,
+            Genre newGenre) {
+        if (oldGenre.equals(newGenre)) {
+            throw new RuntimeException("same as previously saved genre");
+        }
+        Genre alreadyInDbWithSameName = genreRepository.findByName(newGenre.getName());
+        if (alreadyInDbWithSameName != null && alreadyInDbWithSameName.getId() != newGenre.getId()) {
+            throw new RuntimeException("same name in DB with id " + alreadyInDbWithSameName.getId());
+        }
+    }
+
+    @Override
+    public Genre updateGenre(Genre newGenre) {
+        Genre oldGenre = genreRepository.getReferenceById(newGenre.getId());
+        validateForUpdateGenre(oldGenre, newGenre);
+        oldGenre.setName(newGenre.getName());
+        return genreRepository.save(oldGenre);
     }
 
 

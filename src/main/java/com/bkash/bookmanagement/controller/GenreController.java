@@ -28,6 +28,16 @@ public class GenreController {
         );
     }
 
+    @PutMapping Genre updateGenre(
+            @Valid @RequestBody Genre genre
+    ) {
+        if (genre.getId() == null) {
+            throw new RuntimeException("genre id can't be null");
+        }
+        return genreService.updateGenre(genre);
+    }
+
+
     @GetMapping
     public List<Genre> getGenres(
             @RequestParam Optional<Integer> id,

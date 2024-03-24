@@ -8,6 +8,8 @@ import jakarta.validation.constraints.Size;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
+//import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 
 @Entity
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -65,5 +67,9 @@ public class Genre {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(this, obj);
     }
 }

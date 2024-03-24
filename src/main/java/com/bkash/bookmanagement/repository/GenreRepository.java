@@ -29,5 +29,7 @@ public interface GenreRepository
             @Param("limit") Integer limit
     );
 
+    public boolean existsByName(String name);
 
+    public Genre findByName(String name);
 }

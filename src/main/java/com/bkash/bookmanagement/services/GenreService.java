@@ -18,5 +18,5 @@ public interface GenreService {
             Integer limit
     );
 
-
+    public Genre updateGenre(Genre genre);
 }
