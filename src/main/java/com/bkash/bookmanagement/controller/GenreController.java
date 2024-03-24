@@ -3,6 +3,7 @@ package com.bkash.bookmanagement.controller;
 import com.bkash.bookmanagement.entity.Genre;
 import com.bkash.bookmanagement.services.GenreService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,6 +48,11 @@ public class GenreController {
             @RequestParam(defaultValue = "10") int limit
     ) {
         return genreService.getGenre(id, name, bookId, offset, limit);
+    }
+
+    @DeleteMapping("/{genreId}")
+    public void deleteGenre(@PathVariable("genreId") @NotNull Integer genreId) {
+        genreService.deleteGenre(genreId);
     }
 
 }

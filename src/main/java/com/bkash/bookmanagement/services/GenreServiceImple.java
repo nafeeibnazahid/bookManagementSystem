@@ -1,6 +1,7 @@
 package com.bkash.bookmanagement.services;
 
 import com.bkash.bookmanagement.common.Constant;
+import com.bkash.bookmanagement.entity.BookGenre;
 import com.bkash.bookmanagement.entity.Genre;
 import com.bkash.bookmanagement.repository.BookGenreRepository;
 import com.bkash.bookmanagement.repository.BookRepository;
@@ -96,4 +97,20 @@ public class GenreServiceImple implements GenreService {
     }
 
 
+    @Override
+    public void deleteGenre(Integer genreId){
+        List<BookGenre> bookGenreList = bookGenreRepository.findBookGenreByGenreId(genreId) ;
+        if (bookGenreList.size() > 0) {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append( "Genre id " + genreId + " exists for books with id ");
+            for (var bookGenre : bookGenreList) {
+                stringBuilder.append( bookGenre.getBookId() + ", " );
+            }
+            throw new RuntimeException(stringBuilder.toString());
+        }
+        if (genreRepository.findById(genreId).isEmpty()) {
+            throw new RuntimeException("Genre is absent for id " + genreId);
+        }
+        genreRepository.deleteById(genreId);
+    }
 }

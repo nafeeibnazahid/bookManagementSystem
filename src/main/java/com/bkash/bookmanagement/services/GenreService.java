@@ -19,4 +19,6 @@ public interface GenreService {
     );
 
     public Genre updateGenre(Genre genre);
+
+    public void deleteGenre(Integer genreId);
 }
