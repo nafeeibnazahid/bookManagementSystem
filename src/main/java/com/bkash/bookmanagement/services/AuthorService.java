@@ -23,9 +23,9 @@ public interface AuthorService {
             Integer limit
     );
 
-    public Optional<Author> getSingleAuthor(Integer id);
+    public Author getSingleAuthor(Integer id);
 
-    public void deleteById(Integer id);
+//    public void deleteById(Integer id);
 
     public List<Integer> getBookIdListFromAuthorId(Integer authorId);
 

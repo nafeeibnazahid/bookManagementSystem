@@ -1,5 +1,6 @@
 package com.bkash.bookmanagement.services;
 
+import com.bkash.bookmanagement.dto.AddBookRequest;
 import com.bkash.bookmanagement.entity.Author;
 import com.bkash.bookmanagement.entity.Book;
 import com.bkash.bookmanagement.entity.Genre;
@@ -21,6 +22,8 @@ public interface BookService {
             Integer limit
     );
 
+    public Book getAsingleBook(int bookId);
+
     public Author addBookAuthor(int bookId, int authorId);
 
     public void deleteBookAuthor(int bookId, int authorId);
@@ -29,10 +32,8 @@ public interface BookService {
 
     public void removeBookGenre(int bookId, int genreId);
 
-    public Book addBook(
-            Book book,
-            List<Integer> auhtorIdList,
-            List<Integer> genreIdList
+    public Book addBookRequest(
+            AddBookRequest addBookRequest
     );
 
     public void saveOnlyBook(Book book);

@@ -37,7 +37,7 @@ public interface BookRepository
             @Param("endTime") Optional<Date> endTime,
             @Param("partialName") Optional<String> partialName,
             @Param("authorId") Optional<Integer> authorId,
-            Optional<Integer> genreId,
+            @Param("genreId") Optional<Integer> genreId,
             @Param("offset") Integer offset,
             @Param("limit") Integer limit
     );

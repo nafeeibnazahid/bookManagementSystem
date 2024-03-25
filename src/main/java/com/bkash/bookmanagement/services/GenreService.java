@@ -18,6 +18,8 @@ public interface GenreService {
             Integer limit
     );
 
+    public Genre getSingleGenre(int genreId);
+
     public Genre updateGenre(Genre genre);
 
     public void deleteGenre(Integer genreId);

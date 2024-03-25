@@ -77,10 +77,8 @@ public class BookController {
             addBookRequest.genreIdList = new ArrayList<>();
         }
 
-        return bookService.addBook(
-                addBookRequest.getBook(),
-                addBookRequest.getAuthorIdList(),
-                addBookRequest.getGenreIdList()
+        return bookService.addBookRequest(
+            addBookRequest
         );
     }
 

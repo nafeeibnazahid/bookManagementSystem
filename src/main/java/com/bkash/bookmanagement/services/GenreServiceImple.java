@@ -76,6 +76,16 @@ public class GenreServiceImple implements GenreService {
         return genreLIst;
     }
 
+    public Genre getSingleGenre(int genreId) {
+        return getGenre(
+                Optional.of(genreId),
+                Optional.empty(),
+                Optional.empty(),
+                Constant.OFFSET_ZERO,
+                Constant.INFINITE_LIMIT
+        ).get(0);
+    }
+
     private void validateForUpdateGenre(
             Genre oldGenre,
             Genre newGenre) {

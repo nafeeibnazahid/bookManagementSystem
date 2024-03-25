@@ -71,15 +71,21 @@ public class AuthorServiceImple implements AuthorService {
     }
 
     @Override
-    public Optional<Author> getSingleAuthor(Integer id) {
-        return authorRepository.findById(id);
+    public Author getSingleAuthor(Integer id) {
+        return getAuthors(
+                Optional.of(id),
+                Optional.empty(),
+                Optional.empty(),
+                Constant.OFFSET_ZERO,
+                Constant.INFINITE_LIMIT
+        ).get(0);
     }
 
-    @Override
-    public void deleteById(Integer id) {
-        authorRepository.deleteById(id);
-    }
-
+//    @Override
+//    public void deleteById(Integer id) {
+//        authorRepository.deleteById(id);
+//    }
+//
 
     public List<Integer> getBookIdListFromAuthorId(Integer authorId) {
         List<BookAuthor> bookAuthorList = bookAuthorRepository.findBookAuthorByAuthorId(authorId);
