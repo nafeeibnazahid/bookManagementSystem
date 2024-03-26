@@ -1,8 +1,9 @@
 package com.bkash.bookmanagement.services.auth;
 
-import com.bkash.bookmanagement.dto.auth.UserSaveRequest;
+import com.bkash.bookmanagement.dto.auth.NewUserSaveRequest;
 import com.bkash.bookmanagement.dto.auth.UserResponse;
 import com.bkash.bookmanagement.entity.auth.UserInfo;
+import com.bkash.bookmanagement.entity.auth.UserRole;
 import com.bkash.bookmanagement.repository.auth.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Set;
 
 @Component
 @Service
@@ -33,8 +35,13 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
+    public UserInfo updateRoles(UserInfo userInfo, Set<UserRole> roles) {
+        userInfo.setRoles(roles);
+        return userRepository.save(userInfo);
+    }
+
     @Override
-    public UserResponse saveUser(UserSaveRequest userRequest) {
+    public UserResponse saveUser(NewUserSaveRequest userRequest) {
         if (userRequest.getUsername() == null) {
             throw new RuntimeException("Parameter username is not found in request..!!");
         } else if (userRequest.getPassword() == null) {
@@ -87,6 +94,10 @@ public class UserServiceImpl implements UserService {
         UserInfo user = userRepository.findByUsername(usernameFromAccessToken);
         UserResponse userResponse = modelMapper.map(user, UserResponse.class);
         return userResponse;
+    }
+
+    public UserInfo findFirstById(Long userId) {
+        return userRepository.findFirstById(userId);
     }
 
     @Override

@@ -20,10 +20,11 @@ public class RefreshTokenService {
     UserRepository userRepository;
 
     public RefreshToken createRefreshToken(String username) {
+        long fiveMinutesInMilliSeconds = 10 * 60 * 1000;
         RefreshToken refreshToken = RefreshToken.builder()
                 .userInfo(userRepository.findByUsername(username))
                 .token(UUID.randomUUID().toString())
-                .expiryDate(Instant.now().plusMillis(600000)) // set expiry of refresh token to 10 minutes - you can configure it application.properties file
+                .expiryDate(Instant.now().plusMillis(fiveMinutesInMilliSeconds)) // set expiry of refresh token to 10 minutes - you can configure it application.properties file
                 .build();
         return refreshTokenRepository.save(refreshToken);
     }

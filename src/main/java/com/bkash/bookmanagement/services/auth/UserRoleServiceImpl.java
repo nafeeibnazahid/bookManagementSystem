@@ -26,4 +26,9 @@ public class UserRoleServiceImpl implements UserRoleService {
     public UserRole findByName(String name) {
         return userRoleRepository.findByName(name);
     }
+
+    @Override
+    public UserRole findById(Long id) {
+        return userRoleRepository.findById(id).get();
+    }
 }

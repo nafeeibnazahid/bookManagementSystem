@@ -1,12 +1,13 @@
 package com.bkash.bookmanagement.controller;
 
 
+import com.bkash.bookmanagement.common.Authority;
 import com.bkash.bookmanagement.dto.auth.*;
 import com.bkash.bookmanagement.entity.auth.RefreshToken;
-import com.bkash.bookmanagement.services.auth.JwtService;
-import com.bkash.bookmanagement.services.auth.RefreshTokenService;
-import com.bkash.bookmanagement.services.auth.UserDetailsServiceImpl;
-import com.bkash.bookmanagement.services.auth.UserService;
+import com.bkash.bookmanagement.entity.auth.UserInfo;
+import com.bkash.bookmanagement.entity.auth.UserRole;
+import com.bkash.bookmanagement.services.auth.*;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @RestController
@@ -35,23 +38,39 @@ public class UserController {
     private JwtService jwtService;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private UserRoleService userRoleService;
 
 
 
-    @PostMapping(value = "/update")
-    public ResponseEntity updateUser(@RequestBody UserSaveRequest userRequest) {
-        throw new RuntimeException("not yet implemented");
-//        try {
-//            UserResponse userResponse = userService.saveUser(userRequest);
-//            return ResponseEntity.ok(userResponse);
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
+    @PreAuthorize(Authority.Plan.ADMIN)
+    @PutMapping(value = "/update")
+    public ResponseEntity updateUser(@Valid @RequestBody UserUpdateRequest userUpdateRequest) {
+        UserInfo userInfo = userService.findFirstById(userUpdateRequest.getId());
+        StringBuilder stringBuilder = new StringBuilder();
+        if (userInfo == null) {
+            stringBuilder.append("User not found with id " + userUpdateRequest.getId());
+        }
+        Set<UserRole> roles = new HashSet<UserRole>();
+        for (Integer role : userUpdateRequest.getRoles()) {
+            UserRole curUserRole = userRoleService.findById(Long.valueOf(role));
+            if (curUserRole == null ) {
+                stringBuilder.append("Role not found with id " + role);
+            } else {
+                roles.add(curUserRole);
+            }
+        }
+        if (stringBuilder.length() > 0) {
+            throw new RuntimeException(stringBuilder.toString());
+        }
+        UserInfo savedUserInfo = userService.updateRoles(userInfo, roles);
+        return ResponseEntity.ok(savedUserInfo);
     }
 
 
+
     @PostMapping(value = "/save")
-    public ResponseEntity saveUser(@RequestBody UserSaveRequest userRequest) {
+    public ResponseEntity saveUser(@RequestBody NewUserSaveRequest userRequest) {
         try {
             UserResponse userResponse = userService.saveUser(userRequest);
             return ResponseEntity.ok(userResponse);

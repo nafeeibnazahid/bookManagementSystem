@@ -1,7 +1,7 @@
 package com.bkash.bookmanagement.configuation;
 
 import com.bkash.bookmanagement.common.Constant;
-import com.bkash.bookmanagement.dto.auth.UserSaveRequest;
+import com.bkash.bookmanagement.dto.auth.NewUserSaveRequest;
 import com.bkash.bookmanagement.entity.Author;
 import com.bkash.bookmanagement.entity.Book;
 import com.bkash.bookmanagement.entity.Genre;
@@ -82,7 +82,7 @@ public class InsertInitialData implements CommandLineRunner {
         userRoleService.saveUserRole(writeRole);
 
 
-        userService.saveUser(new UserSaveRequest(
+        userService.saveUser(new NewUserSaveRequest(
                 null,
                 "superadmin",
                 "test1234",

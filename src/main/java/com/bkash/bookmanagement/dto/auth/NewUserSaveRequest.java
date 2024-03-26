@@ -12,7 +12,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class UserSaveRequest {
+public class NewUserSaveRequest {
     private Long id;
     private String username;
     private String password;
