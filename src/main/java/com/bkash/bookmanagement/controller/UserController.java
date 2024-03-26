@@ -101,7 +101,7 @@ public class UserController {
         }
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize(Authority.Plan.ADMIN)
     @GetMapping("/test")
     public String test() {
         try {

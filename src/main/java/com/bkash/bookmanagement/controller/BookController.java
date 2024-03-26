@@ -1,5 +1,6 @@
 package com.bkash.bookmanagement.controller;
 
+import com.bkash.bookmanagement.common.Authority;
 import com.bkash.bookmanagement.dto.AddBookRequest;
 import com.bkash.bookmanagement.dto.auth.AddAuthorToABookRequest;
 import com.bkash.bookmanagement.dto.auth.AddGenreToABookRequest;
@@ -10,6 +11,7 @@ import com.bkash.bookmanagement.services.BookService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ public class BookController {
         this.bookService = bookService;
     }
 
+    @PreAuthorize(Authority.Plan.WRITE)
     @PostMapping("/{bookId}/author")
     @ResponseBody
     public Author addAuthor(
@@ -38,6 +41,7 @@ public class BookController {
         return bookService.addBookAuthor(bookId, authorId);
     }
 
+    @PreAuthorize(Authority.Plan.WRITE)
     @DeleteMapping("/{bookId}/author/{authorId}")
     @ResponseBody
     public void deleteAuthor(
@@ -47,6 +51,7 @@ public class BookController {
         bookService.deleteBookAuthor(bookId, authorId);
     }
 
+    @PreAuthorize(Authority.Plan.WRITE)
     @PostMapping("/{bookId}/genre")
     @ResponseBody
     public Genre addGenre(
@@ -57,6 +62,7 @@ public class BookController {
         return bookService.addBookGenre(bookId, genreId);
     }
 
+    @PreAuthorize(Authority.Plan.WRITE)
     @DeleteMapping("/{bookId}/genre/{genreId}")
     @ResponseBody
     public void deleteGenre(
@@ -67,6 +73,7 @@ public class BookController {
     }
 
 
+    @PreAuthorize(Authority.Plan.WRITE)
     @PostMapping
     @ResponseBody
     public Book addBook(@Valid @RequestBody AddBookRequest addBookRequest) {
@@ -106,6 +113,7 @@ public class BookController {
         );
     }
 
+    @PreAuthorize(Authority.Plan.WRITE)
     @PutMapping
     public Book updateBook(
             @Valid @RequestBody Book book
@@ -116,6 +124,7 @@ public class BookController {
         return bookService.updateBook(book);
     }
 
+    @PreAuthorize(Authority.Plan.WRITE)
     @DeleteMapping("/{bookId}")
     public void deleteBook(@PathVariable("bookId") @NotNull Integer bookId) {
         bookService.deleteBook(bookId);

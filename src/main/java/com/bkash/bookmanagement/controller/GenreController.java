@@ -1,9 +1,11 @@
 package com.bkash.bookmanagement.controller;
 
+import com.bkash.bookmanagement.common.Authority;
 import com.bkash.bookmanagement.entity.Genre;
 import com.bkash.bookmanagement.services.GenreService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +22,7 @@ public class GenreController {
         this.genreService = genreService;
     }
 
+    @PreAuthorize(Authority.Plan.WRITE)
     @PostMapping
     public Genre addGenre(
             @Valid @RequestBody Genre genre
@@ -30,6 +33,8 @@ public class GenreController {
         );
     }
 
+
+    @PreAuthorize(Authority.Plan.WRITE)
     @PutMapping Genre updateGenre(
             @Valid @RequestBody Genre genre
     ) {
@@ -51,6 +56,7 @@ public class GenreController {
         return genreService.getGenre(id, name, bookId, offset, limit);
     }
 
+    @PreAuthorize(Authority.Plan.WRITE)
     @DeleteMapping("/{genreId}")
     public void deleteGenre(@PathVariable("genreId") @NotNull Integer genreId) {
         genreService.deleteGenre(genreId);
