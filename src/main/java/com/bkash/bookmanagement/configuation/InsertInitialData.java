@@ -4,6 +4,7 @@ import com.bkash.bookmanagement.dto.auth.UserRequest;
 import com.bkash.bookmanagement.entity.Author;
 import com.bkash.bookmanagement.entity.Book;
 import com.bkash.bookmanagement.entity.Genre;
+import com.bkash.bookmanagement.entity.auth.UserRole;
 import com.bkash.bookmanagement.services.AuthorService;
 import com.bkash.bookmanagement.services.BookService;
 import com.bkash.bookmanagement.services.GenreService;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import javax.management.relation.Role;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -49,6 +51,21 @@ public class InsertInitialData implements CommandLineRunner {
     public void run(String... args) throws Exception {
         saveSuperAdmin();
         createEntities();
+    }
+
+    public void createUserRoles() {
+        UserRole adminRole = new UserRole(
+                1,
+                "ROLE_ADMIN"
+        );
+        UserRole readRole = new UserRole(
+                2,
+                "ROLE_READ"
+        );
+        UserRole readAndWriteRole = new UserRole(
+                3,
+                "ROLE_READ_AND_WRITE"
+        );
     }
 
     private void createEntities() {
