@@ -1,5 +1,6 @@
 package com.bkash.bookmanagement.configuation;
 
+import com.bkash.bookmanagement.common.Constant;
 import com.bkash.bookmanagement.dto.auth.UserRequest;
 import com.bkash.bookmanagement.entity.Author;
 import com.bkash.bookmanagement.entity.Book;
@@ -8,6 +9,7 @@ import com.bkash.bookmanagement.entity.auth.UserRole;
 import com.bkash.bookmanagement.services.AuthorService;
 import com.bkash.bookmanagement.services.BookService;
 import com.bkash.bookmanagement.services.GenreService;
+import com.bkash.bookmanagement.services.auth.UserRoleService;
 import com.bkash.bookmanagement.services.auth.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -16,7 +18,9 @@ import org.springframework.stereotype.Component;
 import javax.management.relation.Role;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashSet;
 
 @Component
 @Slf4j
@@ -30,6 +34,8 @@ public class InsertInitialData implements CommandLineRunner {
 
     private final BookService bookService;
 
+    private final UserRoleService userRoleService;
+
 
     private final Integer entityStart = 1;
     private final Integer entityEnd = 10;
@@ -39,34 +45,26 @@ public class InsertInitialData implements CommandLineRunner {
             UserService userService,
             GenreService genreService,
             AuthorService authorService,
-            BookService bookService
+            BookService bookService,
+            UserRoleService userRoleService
     ) {
         this.userService = userService;
         this.genreService = genreService;
         this.authorService = authorService;
         this.bookService = bookService;
+        this.userRoleService = userRoleService;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        saveSuperAdmin();
+        createSuperAdminAndRoles();
         createEntities();
     }
 
-    public void createUserRoles() {
-        UserRole adminRole = new UserRole(
-                1,
-                "ROLE_ADMIN"
-        );
-        UserRole readRole = new UserRole(
-                2,
-                "ROLE_READ"
-        );
-        UserRole readAndWriteRole = new UserRole(
-                3,
-                "ROLE_READ_AND_WRITE"
-        );
+    void createSuperAdminAndRoles() {
+        saveSuperAdmin();
     }
+
 
     private void createEntities() {
         createGenres();
@@ -76,11 +74,24 @@ public class InsertInitialData implements CommandLineRunner {
 
 
     private void saveSuperAdmin() {
+        UserRole adminRole = new UserRole();
+        adminRole.setName(Constant.ROLE_ADMIN);
+        userRoleService.saveUserRole(adminRole);
+
+        UserRole readRole = new UserRole();
+        readRole.setName(Constant.ROLE_READ);
+        userRoleService.saveUserRole(readRole);
+
+        UserRole writeRole = new UserRole();
+        writeRole.setName(Constant.ROLE_WRITE);
+        userRoleService.saveUserRole(writeRole);
+
+
         userService.saveUser(new UserRequest(
                 null,
                 "superadmin",
                 "test1234",
-                null
+                new HashSet<>(Arrays.asList(adminRole, writeRole))
         ));
     }
 
