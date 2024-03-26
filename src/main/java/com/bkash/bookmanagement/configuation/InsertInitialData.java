@@ -1,7 +1,7 @@
 package com.bkash.bookmanagement.configuation;
 
 import com.bkash.bookmanagement.common.Constant;
-import com.bkash.bookmanagement.dto.auth.UserRequest;
+import com.bkash.bookmanagement.dto.auth.UserSaveRequest;
 import com.bkash.bookmanagement.entity.Author;
 import com.bkash.bookmanagement.entity.Book;
 import com.bkash.bookmanagement.entity.Genre;
@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import javax.management.relation.Role;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -75,19 +74,15 @@ public class InsertInitialData implements CommandLineRunner {
 
     private void saveSuperAdmin() {
         UserRole adminRole = new UserRole();
-        adminRole.setName(Constant.ROLE_ADMIN);
+        adminRole.setName(Constant.ROLE_SUPER);
         userRoleService.saveUserRole(adminRole);
-
-        UserRole readRole = new UserRole();
-        readRole.setName(Constant.ROLE_READ);
-        userRoleService.saveUserRole(readRole);
 
         UserRole writeRole = new UserRole();
         writeRole.setName(Constant.ROLE_WRITE);
         userRoleService.saveUserRole(writeRole);
 
 
-        userService.saveUser(new UserRequest(
+        userService.saveUser(new UserSaveRequest(
                 null,
                 "superadmin",
                 "test1234",

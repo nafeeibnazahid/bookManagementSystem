@@ -17,15 +17,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-import com.bkash.bookmanagement.common.Constant;
-
 
 
 import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/user")
 public class UserController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
@@ -38,8 +36,22 @@ public class UserController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+
+
+    @PostMapping(value = "/update")
+    public ResponseEntity updateUser(@RequestBody UserSaveRequest userRequest) {
+        throw new RuntimeException("not yet implemented");
+//        try {
+//            UserResponse userResponse = userService.saveUser(userRequest);
+//            return ResponseEntity.ok(userResponse);
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+    }
+
+
     @PostMapping(value = "/save")
-    public ResponseEntity saveUser(@RequestBody UserRequest userRequest) {
+    public ResponseEntity saveUser(@RequestBody UserSaveRequest userRequest) {
         try {
             UserResponse userResponse = userService.saveUser(userRequest);
             return ResponseEntity.ok(userResponse);
@@ -48,7 +60,8 @@ public class UserController {
         }
     }
 
-    @GetMapping("/users")
+//    @GetMapping("/users")
+    @GetMapping()
     public ResponseEntity getAllUsers() {
         try {
             List<UserResponse> userResponses = userService.getAllUser();

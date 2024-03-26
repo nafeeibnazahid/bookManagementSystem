@@ -1,6 +1,6 @@
 package com.bkash.bookmanagement.services.auth;
 
-import com.bkash.bookmanagement.dto.auth.UserRequest;
+import com.bkash.bookmanagement.dto.auth.UserSaveRequest;
 import com.bkash.bookmanagement.dto.auth.UserResponse;
 import com.bkash.bookmanagement.entity.auth.UserInfo;
 import com.bkash.bookmanagement.repository.auth.UserRepository;
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse saveUser(UserRequest userRequest) {
+    public UserResponse saveUser(UserSaveRequest userRequest) {
         if (userRequest.getUsername() == null) {
             throw new RuntimeException("Parameter username is not found in request..!!");
         } else if (userRequest.getPassword() == null) {
