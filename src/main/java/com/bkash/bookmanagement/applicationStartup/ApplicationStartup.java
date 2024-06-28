@@ -18,5 +18,6 @@ public class ApplicationStartup
         System.out.println("before any api call");
 
         return;
+        
     }
 }
