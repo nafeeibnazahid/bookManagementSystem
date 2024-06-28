@@ -14,9 +14,7 @@
 
 3. run `mvn spring-boot:run` the command in another terminal.
 
-4. You can check the apis via postman. Can find the postman collections in `./entryTaskJava.postman_collection.json`
-
-5. You can check the apis via postman. Can find the postman collections in [./entryTaskJava.postman_collection.json](entryTaskJava.postman_collection.json)
+4. You can check the apis via postman. Can find the postman collections in [./entryTaskJava.postman_collection.json](entryTaskJava.postman_collection.json)
 
 
 
