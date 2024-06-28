@@ -1,6 +1,11 @@
 # bookManagementSystem
 
 
+# Requirements
+
+[Requirements.pdf](Requirements.pdf)
+
+
 # How to run it
 
 1. Go to the root folder of this project.
